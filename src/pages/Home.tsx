@@ -19,7 +19,9 @@ import {
   SlidersIcon,
   Zap,
 } from "@/components/Icons";
+import { useVersions } from "@/hooks/useVersions";
 import { LATEST_RELEASE, REACTOS, REPO, VERSION, doc } from "@/lib/links";
+import { formatPlatformName, formatReleaseDate } from "@/services/versions.service";
 
 const EXAMPLE = `extern fn puts(s: *const u8) i32;
 
@@ -180,6 +182,11 @@ const TONE: Record<string, string> = {
 };
 
 export default function Home() {
+  const { latestRelease, latestVersion } = useVersions();
+  const latestPlatforms = latestRelease
+    ? Array.from(new Set(latestRelease.downloads.map((d) => formatPlatformName(d.platform))))
+    : [];
+
   return (
     <div>
       {/* ============ HERO ============ */}
@@ -209,7 +216,7 @@ export default function Home() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a href="#/download" className="btn-primary !px-5 !py-3">
                 <DownloadIcon className="h-4 w-4" />
-                Baixar agora
+                {latestVersion ? `Baixar ${latestVersion}` : "Baixar agora"}
                 <ArrowRightIcon className="h-4 w-4" />
               </a>
               <a href="#/documentacao" className="btn-secondary !px-5 !py-3">
@@ -227,7 +234,15 @@ export default function Home() {
                 <ExternalIcon className="h-3.5 w-3.5" />
               </a>
             </div>
-            <div className="mt-8 flex flex-wrap gap-x-5 gap-y-1 font-mono text-xs text-zinc-500">
+            {latestRelease && (
+              <p className="mt-4 font-mono text-xs text-zinc-500">
+                Catálogo de distribuição: <span className="font-semibold text-zinc-800">{latestRelease.version}</span>
+                {" · "}
+                {formatReleaseDate(latestRelease.releaseDate)}
+                {latestPlatforms.length > 0 && ` · ${latestPlatforms.join(" / ")}`}
+              </p>
+            )}
+            <div className="mt-6 flex flex-wrap gap-x-5 gap-y-1 font-mono text-xs text-zinc-500">
               <span>licença MIT</span>
               <span>Zig 0.17.0</span>
               <span>backend LLVM</span>
@@ -402,7 +417,7 @@ export default function Home() {
             <div className="relative mt-8 flex flex-wrap items-center justify-center gap-3">
               <a href="#/download" className="btn-amber !px-5 !py-3">
                 <DownloadIcon className="h-4 w-4" />
-                Baixar o Kyn
+                {latestVersion ? `Baixar o Kyn ${latestVersion}` : "Baixar o Kyn"}
               </a>
               <a
                 href="#/documentacao"

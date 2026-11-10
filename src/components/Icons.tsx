@@ -267,3 +267,44 @@ export function FileIcon({ className }: { className?: string }) {
     </S>
   );
 }
+
+export function AlertCircleIcon({ className }: { className?: string }) {
+  return (
+    <S className={className}>
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" x2="12" y1="8" y2="12" />
+      <line x1="12" x2="12.01" y1="16" y2="16" />
+    </S>
+  );
+}
+
+export function CalendarIcon({ className }: { className?: string }) {
+  return (
+    <S className={className}>
+      <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+      <line x1="16" x2="16" y1="2" y2="6" />
+      <line x1="8" x2="8" y1="2" y2="6" />
+      <line x1="3" x2="21" y1="10" y2="10" />
+    </S>
+  );
+}
+
+export function RefreshIcon({ className }: { className?: string }) {
+  return (
+    <S className={className}>
+      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+      <path d="M21 3v5h-5" />
+      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+      <path d="M8 16H3v5" />
+    </S>
+  );
+}
+
+export function ChevronDownIcon({ className }: { className?: string }) {
+  return (
+    <S className={className}>
+      <path d="m6 9 6 6 6-6" />
+    </S>
+  );
+}
+

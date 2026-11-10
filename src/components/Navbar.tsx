@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useVersions } from "@/hooks/useVersions";
 import type { Route } from "@/lib/router";
 import { REPO, VERSION } from "@/lib/links";
 import { cn } from "@/utils/cn";
@@ -12,6 +13,8 @@ const LINKS: { route: Route; label: string; hash: string }[] = [
 
 export default function Navbar({ route }: { route: Route }) {
   const [open, setOpen] = useState(false);
+  const { latestVersion } = useVersions();
+  const displayVersion = latestVersion ?? VERSION;
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/85 backdrop-blur-md">
@@ -22,7 +25,7 @@ export default function Navbar({ route }: { route: Route }) {
           </span>
           <span className="text-lg font-bold tracking-tight text-zinc-950">Kyn</span>
           <span className="hidden rounded-full border border-zinc-200 px-2 py-0.5 font-mono text-[11px] text-zinc-500 sm:inline">
-            {VERSION}
+            {displayVersion}
           </span>
         </a>
 
