@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "language": {
+    "name": "Kyn",
+    "description": "Programming language.",
+    "website": "https://hardion-labs.github.io/Kyn-Web/"
+  },
+  "latestVersion": "1.0.0",
+  "releases": [
+    {
+      "version": "1.0.0",
+      "releaseDate": "2026-11-10",
+      "stable": true,
+      "published": true,
+      "prerelease": false,
+      "changelog": [
+        "Initial release",
+        "First stable compiler"
+      ],
+      "downloads": [
+        {
+          "platform": "linux",
+          "architecture": "x86_64",
+          "filename": "kyn-linux-x86_64.tar.gz",
+          "size": 12582912,
+          "url": "https://drive.google.com/uc?id=FILE_ID&export=download",
+          "sha256": "REPLACE_WITH_REAL_SHA256"
+        },
+        {
+          "platform": "windows",
+          "architecture": "x86_64",
+          "filename": "kyn-windows-x86_64.zip",
+          "size": 15728640,
+          "url": "https://drive.google.com/uc?id=FILE_ID&export=download",
+          "sha256": "REPLACE_WITH_REAL_SHA256"
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,11 @@
+import { useVersions } from "@/hooks/useVersions";
 import { HARDION_LABS, LATEST_RELEASE, REACTOS, REPO, RELEASES, VERSION } from "@/lib/links";
 import { ExternalIcon, GithubIcon, Zap } from "./Icons";
 
 export default function Footer() {
+  const { latestVersion } = useVersions();
+  const displayVersion = latestVersion ?? VERSION;
+
   return (
     <footer className="border-t border-zinc-200 bg-zinc-50">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
@@ -16,7 +20,7 @@ export default function Footer() {
             Linguagem de programação de sistemas da Hardion Labs. Controle explícito, segurança
             verificável e desempenho previsível — para kernels, drivers, embarcados e software nativo.
           </p>
-          <p className="mt-4 font-mono text-xs text-zinc-500">{VERSION} · licença MIT · backend LLVM</p>
+          <p className="mt-4 font-mono text-xs text-zinc-500">{displayVersion} · licença MIT · backend LLVM</p>
         </div>
 
         <div>
