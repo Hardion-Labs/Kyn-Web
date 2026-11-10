@@ -9,15 +9,18 @@
   "releases": [
     {
       "version": "0.1.0-alpha.3",
-      "releaseDate": "2026-11-10",
-      "stable": true,
+      "releaseDate": "2026-11-09",
+      "stable": false,
       "published": true,
-      "prerelease": false,
+      "prerelease": true,
       "changelog": [
-        "Initial stable release.",
-        "First stable Kyn compiler.",
-        "Initial standard library.",
-        "Linux and Windows x86_64 support."
+        "Explicit relative-path imports (import \"path.kyn\" / as alias) with per-source namespaces and private enforcement.",
+        "kyn-build hashes transitive Kyn imports into SHA-256 cache stamps.",
+        "Slices: open-ended and bounded slicing, const-polymorphic slicing, read-only slice.ptr / slice.len.",
+        "Lvalue and mutability hardening; immutable const/let globals.",
+        "Runtime-check policy is explicit per profile; all implemented checks are kept in every profile.",
+        "Expanded x86_64-linux C ABI aggregate support (SSE/SSEUP, byval/sret) with executable interop fixtures.",
+        "Alpha: no source or ABI stability is promised between releases."
       ],
       "downloads": [
         {
@@ -37,6 +40,37 @@
           "sha256": "REPLACE_WITH_REAL_SHA256"
         }
       ]
+    },
+    {
+      "version": "0.1.0-alpha.2",
+      "releaseDate": "2026-11-09",
+      "stable": false,
+      "published": true,
+      "prerelease": true,
+      "changelog": [
+        "Full pipeline: lexer, parser, type checker, static analyzer, typed IR, LLVM backend.",
+        "CLI with check, emit-llvm, emit-obj, build and run; safety profiles debug, safe, release, fast.",
+        "Subslicing (slice[start..end]), pointer arithmetic, short-circuit boolean operators.",
+        "C ABI via extern fn / export fn, including slices as struct { ptr, usize }.",
+        "kyn-build with kyn.build files and a hybrid Kyn + C + Zig example.",
+        "Diagnostics with stable codes; 900-case deterministic robustness corpus."
+      ],
+      "downloads": []
+    },
+    {
+      "version": "0.1.0-alpha.1",
+      "releaseDate": "2026-11-09",
+      "stable": false,
+      "published": true,
+      "prerelease": true,
+      "changelog": [
+        "First public alpha of the Kyn compiler and toolchain.",
+        "kync CLI (check, emit-llvm, emit-obj, build, run) and kyn-build.",
+        "Explicit pointers, fixed-size arrays, always-on safety checks (bounds, overflow, division, shifts).",
+        "C ABI interoperability through extern fn / export fn.",
+        "Tested with Zig 0.17.0 and Clang 23.1.2 on Linux x86-64."
+      ],
+      "downloads": []
     }
   ]
 }
