@@ -5,10 +5,10 @@
     "description": "Programming language.",
     "website": "https://hardion-labs.github.io/Kyn-Web/"
   },
-  "latestVersion": "1.0.0",
+  "latestVersion": "0.1.0-alpha.3",
   "releases": [
     {
-      "version": "1.0.0",
+      "version": "0.1.0-alpha.3",
       "releaseDate": "2026-11-10",
       "stable": true,
       "published": true,
@@ -23,17 +23,17 @@
         {
           "platform": "linux",
           "architecture": "x86_64",
-          "filename": "kyn-linux-x86_64.tar.gz",
+          "filename": "kyn-0.1.0-alpha.3-linux-x86_64.tar.gz",
           "size": 12582912,
-          "url": "https://drive.google.com/file/d/1MFzoa1TlHpy19s4AAG3Db-2TXtX5n0d7/view?usp=sharing",
+          "url": "https://drive.google.com/file/d/1sj-pUk2mdLAsQ50XdfRmzgMMemGoyWWC/view?usp=sharing",
           "sha256": "REPLACE_WITH_REAL_SHA256"
         },
         {
           "platform": "windows",
           "architecture": "x86_64",
-          "filename": "kyn-windows-x86_64.zip",
+          "filename": "kyn-0.1.0-alpha.3-windows-x86_64.zip",
           "size": 15728640,
-          "url": "https://drive.google.com/file/d/1MFzoa1TlHpy19s4AAG3Db-2TXtX5n0d7/view?usp=sharing",
+          "url": "https://drive.google.com/file/d/1ldZ6VbD1VEWzY8eRuN7uyWMyvKdS9sy2/view?usp=sharing",
           "sha256": "REPLACE_WITH_REAL_SHA256"
         }
       ]
@@ -193,7 +193,7 @@
       ]
     },
     {
-      "version": "0.1.0",
+      "version": "0.1.0-alpha.3",
       "releaseDate": "2026-01-15",
       "stable": false,
       "published": true,
@@ -207,9 +207,9 @@
         {
           "platform": "linux",
           "architecture": "x86_64",
-          "filename": "kyn-0.1.0-linux-x86_64.tar.gz",
+          "filename": "kyn-0.1.0-alpha.3-linux-x86_64.tar.gz",
           "size": 5242880,
-          "url": "https://drive.google.com/uc?id=FILE_ID",
+          "url": "https://drive.google.com/file/d/1sj-pUk2mdLAsQ50XdfRmzgMMemGoyWWC/view?usp=sharing",
           "sha256": "REPLACE_WITH_REAL_SHA256"
         }
       ]
