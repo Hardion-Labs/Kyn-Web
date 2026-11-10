@@ -3,6 +3,7 @@ import {
   fetchVersionsManifest,
   getCachedVersionsManifest,
   getLatestRelease,
+  getNewestRelease,
   getPublishedReleases,
 } from "@/services/versions.service";
 import type { Release, VersionsManifest, VersionsStatus } from "@/types/versions";
@@ -86,6 +87,7 @@ export interface UseVersionsResult {
   manifest: VersionsManifest | null;
   releases: Release[];
   latestRelease: Release | null;
+  newestRelease: Release | null;
   latestVersion: string | null;
   error: string | null;
   isLoading: boolean;
@@ -115,9 +117,14 @@ export function useVersions(): UseVersionsResult {
     [current.manifest]
   );
 
+  const newestRelease = useMemo(
+    () => (current.manifest ? getNewestRelease(current.manifest) : null),
+    [current.manifest]
+  );
+
   const latestVersion = useMemo(() => {
     if (!current.manifest) return null;
-    return current.manifest.latestVersion || latestRelease?.version || null;
+    return latestRelease?.version || current.manifest.latestVersion || null;
   }, [current.manifest, latestRelease]);
 
   return {
@@ -125,6 +132,7 @@ export function useVersions(): UseVersionsResult {
     manifest: current.manifest,
     releases,
     latestRelease,
+    newestRelease,
     latestVersion,
     error: current.error,
     isLoading: current.status === "loading",

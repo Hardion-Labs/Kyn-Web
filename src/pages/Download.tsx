@@ -9,6 +9,7 @@ import VersionCard from "@/components/downloads/VersionCard";
 import {
   AlertCircleIcon,
   AppleIcon,
+  ArrowRightIcon,
   BoxIcon,
   CalendarIcon,
   CheckIcon,
@@ -16,8 +17,10 @@ import {
   ExternalIcon,
   GithubIcon,
   GlobeIcon,
+  KynLogo,
   MonitorIcon,
   RefreshIcon,
+  ShieldIcon,
   TerminalIcon,
   WindowsIcon,
   WrenchIcon,
@@ -27,9 +30,14 @@ import { useVersions } from "@/hooks/useVersions";
 import { LATEST_RELEASE, REACTOS, RELEASES, REPO, VERSION, ZIP } from "@/lib/links";
 import { type OSKey, PLATFORMS, detectArch, detectOS } from "@/lib/os";
 import {
+  findRecommendedDownload,
+  formatBytes,
+  formatExactBytes,
   formatPlatformName,
   formatReleaseDate,
+  isPlaceholderSha256,
   normalizePlatformKey,
+  resolveDriveLinks,
 } from "@/services/versions.service";
 import type { ComponentType } from "react";
 
@@ -80,6 +88,7 @@ export default function Download() {
     status,
     releases,
     latestRelease,
+    newestRelease,
     latestVersion,
     error,
     reload,
@@ -88,6 +97,20 @@ export default function Download() {
   const [selectedVersion, setSelectedVersion] = useState<string | null>(null);
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
   const [selectedArchitecture, setSelectedArchitecture] = useState<string | null>(null);
+
+  const recommendedDownload = useMemo(
+    () => findRecommendedDownload(latestRelease, os.key, arch),
+    [latestRelease, os.key, arch]
+  );
+
+  const recommendedDriveLinks = useMemo(
+    () => (recommendedDownload ? resolveDriveLinks(recommendedDownload.url) : null),
+    [recommendedDownload]
+  );
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const activeRelease = useMemo(() => {
     if (releases.length === 0) return null;
@@ -186,30 +209,232 @@ export default function Download() {
                 )}
               </p>
               <p className="mt-1 max-w-md text-sm leading-relaxed text-zinc-600">{os.detail}</p>
-              {os.recommended && (
+              {os.recommended ? (
                 <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-800">
                   <CheckIcon className="h-3.5 w-3.5" />
                   Plataforma validada oficialmente nesta release
                 </span>
-              )}
+              ) : recommendedDownload ? (
+                <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-800">
+                  <CheckIcon className="h-3.5 w-3.5" />
+                  Pacote disponível para {os.name} ({recommendedDownload.architecture})
+                </span>
+              ) : null}
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <a href={REPO} target="_blank" rel="noreferrer" className="btn-primary">
+            <a href={REPO} target="_blank" rel="noreferrer" className="btn-secondary">
               <GithubIcon className="h-4 w-4" />
               Repositório oficial
             </a>
-            <a href={LATEST_RELEASE} target="_blank" rel="noreferrer" className="btn-secondary">
-              <DownloadIcon className="h-4 w-4" />
-              Release {VERSION}
-            </a>
             <a href={ZIP} target="_blank" rel="noreferrer" className="btn-secondary">
-              Baixar ZIP
+              Código ZIP
               <ExternalIcon className="h-3.5 w-3.5" />
             </a>
           </div>
         </div>
-        {!os.recommended && (
+
+        {/* Destaque da versão mais nova detectada no JSON */}
+        {status === "loading" && (
+          <div className="mt-6 rounded-xl border border-zinc-200 bg-zinc-50 p-5">
+            <div className="animate-pulse space-y-3">
+              <div className="h-4 w-44 rounded bg-zinc-200" />
+              <div className="h-5 w-72 rounded bg-zinc-200" />
+            </div>
+          </div>
+        )}
+
+        {status === "success" && latestRelease && (
+          <div className="relative mt-6 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 p-5 text-white sm:p-6">
+            <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-56 rounded-full bg-amber-400/15 blur-2xl" />
+            <div className="relative flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-400/15 px-2.5 py-0.5 text-xs font-semibold text-amber-300 ring-1 ring-amber-400/30">
+                    <KynLogo className="h-3 w-3" />
+                    Versão mais recente · {latestRelease.version}
+                  </span>
+                  {latestRelease.stable && !latestRelease.prerelease ? (
+                    <span className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-semibold text-emerald-300 ring-1 ring-emerald-500/30">
+                      Estável
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-yellow-500/15 px-2.5 py-0.5 text-xs font-semibold text-yellow-300 ring-1 ring-yellow-500/30">
+                      Pré-lançamento
+                    </span>
+                  )}
+                  <span className="inline-flex items-center gap-1 text-xs text-zinc-400">
+                    <CalendarIcon className="h-3.5 w-3.5" />
+                    {formatReleaseDate(latestRelease.releaseDate)}
+                  </span>
+                  {newestRelease && newestRelease.version !== latestRelease.version && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedVersion(newestRelease.version);
+                        scrollToSection("downloads-oficiais-heading");
+                      }}
+                      className="rounded-full border border-zinc-700 bg-zinc-900 px-2.5 py-0.5 text-xs font-medium text-zinc-300 transition hover:border-amber-400/50 hover:text-amber-300"
+                    >
+                      Preview mais recente: {newestRelease.version}
+                    </button>
+                  )}
+                </div>
+
+                {recommendedDownload && recommendedDriveLinks ? (
+                  <>
+                    <h2 className="mt-3 text-lg font-bold tracking-tight text-white sm:text-xl">
+                      Download recomendado para {formatPlatformName(recommendedDownload.platform)} (
+                      {recommendedDownload.architecture})
+                    </h2>
+                    <p className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-xs text-zinc-300">
+                      <span>{recommendedDownload.filename}</span>
+                      <span aria-hidden="true" className="text-zinc-600">
+                        ·
+                      </span>
+                      <span className="font-semibold text-amber-300">
+                        {formatBytes(recommendedDownload.size)}
+                      </span>
+                      <span className="text-zinc-400">
+                        ({formatExactBytes(recommendedDownload.size)})
+                      </span>
+                    </p>
+                    <p className="mt-2 inline-flex flex-wrap items-center gap-1.5 text-xs text-zinc-400">
+                      <ShieldIcon className="h-3.5 w-3.5 text-amber-400" />
+                      <span>SHA-256:</span>
+                      <code className="font-mono text-zinc-300">
+                        {isPlaceholderSha256(recommendedDownload.sha256)
+                          ? recommendedDownload.sha256
+                          : `${recommendedDownload.sha256.slice(0, 16)}...`}
+                      </code>
+                      {(recommendedDriveLinks.isPlaceholder ||
+                        isPlaceholderSha256(recommendedDownload.sha256)) && (
+                        <span className="rounded bg-amber-400/15 px-1.5 py-0.5 text-[11px] font-medium text-amber-300">
+                          Aguardando publicação real no Drive
+                        </span>
+                      )}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="mt-3 text-lg font-bold tracking-tight text-white sm:text-xl">
+                      Kyn {latestRelease.version} disponível no catálogo
+                    </h2>
+                    <p className="mt-1.5 text-sm text-zinc-300">
+                      Não há pacote pré-compilado específico para{" "}
+                      <strong className="text-white">{os.name}</strong> nesta versão.{" "}
+                      {latestRelease.downloads.length > 0 && (
+                        <>
+                          Plataformas disponíveis:{" "}
+                          <span className="font-mono text-xs text-amber-300">
+                            {latestRelease.downloads
+                              .map(
+                                (item) =>
+                                  `${formatPlatformName(item.platform)} (${item.architecture})`
+                              )
+                              .join(" · ")}
+                          </span>
+                          .
+                        </>
+                      )}
+                    </p>
+                  </>
+                )}
+              </div>
+
+              <div className="flex shrink-0 flex-wrap items-center gap-2.5">
+                {recommendedDownload && recommendedDriveLinks ? (
+                  <>
+                    <a
+                      href={recommendedDriveLinks.downloadUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-amber !px-4 !py-2.5"
+                    >
+                      <DownloadIcon className="h-4 w-4" />
+                      Baixar {latestRelease.version}
+                    </a>
+                    <a
+                      href={recommendedDriveLinks.shareUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-3.5 py-2.5 text-sm font-semibold text-zinc-100 transition hover:border-zinc-500 hover:bg-zinc-800"
+                    >
+                      Google Drive
+                      <ExternalIcon className="h-3.5 w-3.5" />
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection("downloads-oficiais-heading")}
+                      className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-medium text-zinc-300 transition hover:bg-zinc-900 hover:text-white"
+                    >
+                      SHA-256 e outras versões
+                      <ArrowRightIcon className="h-3.5 w-3.5" />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection("downloads-oficiais-heading")}
+                      className="btn-amber !px-4 !py-2.5"
+                    >
+                      <DownloadIcon className="h-4 w-4" />
+                      Ver downloads disponíveis
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection("compilar-da-fonte")}
+                      className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-3.5 py-2.5 text-sm font-semibold text-zinc-100 transition hover:border-zinc-500 hover:bg-zinc-800"
+                    >
+                      Compilar da fonte
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {status === "error" && (
+          <div className="mt-6 flex flex-col gap-3 rounded-xl border border-red-200 bg-red-50/70 p-4 text-sm text-red-900 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-2.5">
+              <AlertCircleIcon className="mt-0.5 h-4 w-4 shrink-0 text-red-700" />
+              <div>
+                <p className="font-semibold">Não foi possível detectar a versão mais recente no JSON.</p>
+                <p className="mt-0.5 text-xs text-red-800">{error}</p>
+              </div>
+            </div>
+            <div className="flex shrink-0 flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => void reload()}
+                className="btn-secondary !border-red-300 !px-3 !py-1.5 !text-xs !text-red-900 hover:!bg-red-100"
+              >
+                <RefreshIcon className="h-3.5 w-3.5" />
+                Tentar novamente
+              </button>
+              <a
+                href={LATEST_RELEASE}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-secondary !px-3 !py-1.5 !text-xs"
+              >
+                Release {VERSION}
+                <ExternalIcon className="h-3 w-3" />
+              </a>
+            </div>
+          </div>
+        )}
+
+        {status === "empty" && (
+          <p className="mt-6 rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-600">
+            Nenhuma versão binária publicada em <code className="font-mono">versions.json</code> ainda —
+            utilize o guia de compilação da fonte abaixo.
+          </p>
+        )}
+
+        {!os.recommended && !recommendedDownload && (
           <p className="mt-5 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 ring-1 ring-amber-200">
             Nesta release, a plataforma validada oficialmente é <strong>Linux x86_64</strong>. Nos demais
             sistemas, consulte os pacotes abaixo ou siga as instruções de compilação para sua plataforma.
@@ -470,7 +695,7 @@ export default function Download() {
       </div>
 
       {/* ===== Compilar da fonte ===== */}
-      <div className="mt-14">
+      <div id="compilar-da-fonte" className="mt-14 scroll-mt-24">
         <h2 className="text-xl font-bold tracking-tight text-zinc-950">Compilar a partir da fonte</h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-600">
           Para testar os recursos mais recentes do código-fonte ou gerar o toolchain localmente, clone o

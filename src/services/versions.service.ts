@@ -341,23 +341,141 @@ export function validateManifest(raw: unknown): VersionsManifest {
   };
 }
 
+interface ParsedSemver {
+  core: number[];
+  prerelease: string[];
+}
+
+function parseSemver(raw: string): ParsedSemver | null {
+  const cleaned = raw.trim().replace(/^v/i, "").split("+")[0];
+  if (!cleaned) return null;
+
+  const dashIdx = cleaned.indexOf("-");
+  const corePart = dashIdx === -1 ? cleaned : cleaned.slice(0, dashIdx);
+  const prePart = dashIdx === -1 ? "" : cleaned.slice(dashIdx + 1);
+
+  const coreSegments = corePart.split(".");
+  if (coreSegments.length === 0 || coreSegments.some((seg) => !/^\d+$/.test(seg))) {
+    return null;
+  }
+
+  const core = coreSegments.map((seg) => Number(seg));
+  while (core.length < 3) core.push(0);
+
+  const prerelease = prePart ? prePart.split(".").filter(Boolean) : [];
+  return { core, prerelease };
+}
+
+function comparePrereleaseIdentifiers(a: string, b: string): number {
+  const aNum = /^\d+$/.test(a);
+  const bNum = /^\d+$/.test(b);
+
+  if (aNum && bNum) return Number(a) - Number(b);
+  if (aNum) return -1;
+  if (bNum) return 1;
+  return a.localeCompare(b);
+}
+
+export function compareVersions(a: string, b: string): number {
+  const pa = parseSemver(a);
+  const pb = parseSemver(b);
+
+  if (!pa || !pb) {
+    return a.trim().localeCompare(b.trim(), undefined, {
+      numeric: true,
+      sensitivity: "base",
+    });
+  }
+
+  const maxCore = Math.max(pa.core.length, pb.core.length);
+  for (let i = 0; i < maxCore; i += 1) {
+    const diff = (pa.core[i] ?? 0) - (pb.core[i] ?? 0);
+    if (diff !== 0) return diff;
+  }
+
+  if (pa.prerelease.length === 0 && pb.prerelease.length === 0) return 0;
+  if (pa.prerelease.length === 0) return 1;
+  if (pb.prerelease.length === 0) return -1;
+
+  const maxPre = Math.max(pa.prerelease.length, pb.prerelease.length);
+  for (let i = 0; i < maxPre; i += 1) {
+    const ai = pa.prerelease[i];
+    const bi = pb.prerelease[i];
+    if (ai === undefined) return -1;
+    if (bi === undefined) return 1;
+    const diff = comparePrereleaseIdentifiers(ai, bi);
+    if (diff !== 0) return diff;
+  }
+
+  return 0;
+}
+
+function compareReleasesNewestFirst(a: Release, b: Release): number {
+  const versionDiff = compareVersions(b.version, a.version);
+  if (versionDiff !== 0) return versionDiff;
+  return b.releaseDate.localeCompare(a.releaseDate);
+}
+
 export function getPublishedReleases(manifest: VersionsManifest): Release[] {
   const published = manifest.releases.filter((release) => release.published);
-  return [...published].sort((a, b) => {
-    if (a.version === manifest.latestVersion && b.version !== manifest.latestVersion) return -1;
-    if (b.version === manifest.latestVersion && a.version !== manifest.latestVersion) return 1;
-    return b.releaseDate.localeCompare(a.releaseDate);
-  });
+  return [...published].sort(compareReleasesNewestFirst);
+}
+
+export function getNewestRelease(manifest: VersionsManifest): Release | null {
+  const published = getPublishedReleases(manifest);
+  return published[0] ?? null;
 }
 
 export function getLatestRelease(manifest: VersionsManifest): Release | null {
   const published = getPublishedReleases(manifest);
   if (published.length === 0) return null;
 
+  const stablePublished = published.filter((release) => release.stable && !release.prerelease);
+  if (stablePublished.length > 0) {
+    const newestStable = stablePublished[0];
+    const declaredLatest = manifest.latestVersion
+      ? stablePublished.find((release) => release.version === manifest.latestVersion)
+      : undefined;
+
+    if (declaredLatest && compareVersions(declaredLatest.version, newestStable.version) >= 0) {
+      return declaredLatest;
+    }
+
+    return newestStable;
+  }
+
   return (
-    published.find((release) => release.version === manifest.latestVersion) ??
-    published.find((release) => release.stable && !release.prerelease) ??
-    published[0]
+    (manifest.latestVersion
+      ? published.find((release) => release.version === manifest.latestVersion)
+      : undefined) ?? published[0]
+  );
+}
+
+export function findRecommendedDownload(
+  release: Release | null,
+  osKey: string,
+  arch: string | null
+): Download | null {
+  if (!release || release.downloads.length === 0) return null;
+
+  const targetPlatform = normalizePlatformKey(osKey);
+  if (!targetPlatform || targetPlatform === "unknown") return null;
+
+  const platformMatches = release.downloads.filter(
+    (item) => normalizePlatformKey(item.platform) === targetPlatform
+  );
+  if (platformMatches.length === 0) return null;
+
+  if (arch) {
+    const exactArch = platformMatches.find(
+      (item) => item.architecture.toLowerCase() === arch.toLowerCase()
+    );
+    if (exactArch) return exactArch;
+  }
+
+  return (
+    platformMatches.find((item) => item.architecture.toLowerCase() === "x86_64") ??
+    platformMatches[0]
   );
 }
 
