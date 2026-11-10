@@ -25,7 +25,7 @@
           "architecture": "x86_64",
           "filename": "kyn-linux-x86_64.tar.gz",
           "size": 12582912,
-          "url": "https://drive.google.com/uc?id=FILE_ID",
+          "url": "https://drive.google.com/file/d/1MFzoa1TlHpy19s4AAG3Db-2TXtX5n0d7/view?usp=sharing",
           "sha256": "REPLACE_WITH_REAL_SHA256"
         },
         {
@@ -33,7 +33,7 @@
           "architecture": "x86_64",
           "filename": "kyn-windows-x86_64.zip",
           "size": 15728640,
-          "url": "https://drive.google.com/uc?id=FILE_ID",
+          "url": "https://drive.google.com/file/d/1MFzoa1TlHpy19s4AAG3Db-2TXtX5n0d7/view?usp=sharing",
           "sha256": "REPLACE_WITH_REAL_SHA256"
         }
       ]
