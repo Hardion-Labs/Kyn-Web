@@ -188,8 +188,6 @@ export function formatPlatformName(platform: string): string {
       return "Windows";
     case "macos":
       return "macOS";
-    case "reactos":
-      return "ReactOS";
     default: {
       const trimmed = platform.trim();
       return trimmed ? trimmed.charAt(0).toUpperCase() + trimmed.slice(1) : "Unknown";

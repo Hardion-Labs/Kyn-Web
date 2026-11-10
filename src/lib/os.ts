@@ -1,4 +1,4 @@
-export type OSKey = "windows" | "macos" | "linux" | "reactos" | "android" | "ios" | "unknown";
+export type OSKey = "windows" | "macos" | "linux" | "android" | "ios" | "unknown";
 
 export interface OSInfo {
   key: OSKey;
@@ -26,15 +26,6 @@ export function detectOS(): OSInfo {
   const uaDataPlat =
     (navigator as unknown as { userAgentData?: { platform?: string } }).userAgentData?.platform || "";
 
-  // ReactOS user agents historically contain "Windows NT" tokens — check this first.
-  if (/reactos/i.test(ua) || /reactos/i.test(plat)) {
-    return {
-      key: "reactos",
-      name: "ReactOS",
-      detail: "open source operating system compatible with Windows — see github.com/reactos/reactos",
-      recommended: false,
-    };
-  }
   if (/windows|win32|win64|windows nt/i.test(ua) || /^win/i.test(plat) || /windows/i.test(uaDataPlat)) {
     return {
       key: "windows",
@@ -130,20 +121,6 @@ zig build
     commands: `# Command Line Tools (Clang) + Zig 0.17.0 (https://ziglang.org/download/)
 xcode-select --install
 
-git clone https://github.com/Hardion-Labs/Kyn.git
-cd Kyn
-zig build
-./zig-out/bin/kync run examples/hello.kyn`,
-  },
-  {
-    key: "reactos",
-    name: "ReactOS",
-    note: "github.com/reactos/reactos",
-    blurb: "Kyn was designed for kernels and drivers — and ReactOS is an open source operating system compatible with Windows, a natural target for the language.",
-    commands: `# Official ReactOS repository:
-https://github.com/reactos/reactos
-
-# On ReactOS (via ROSBE / POSIX subsystem):
 git clone https://github.com/Hardion-Labs/Kyn.git
 cd Kyn
 zig build

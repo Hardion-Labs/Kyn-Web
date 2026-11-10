@@ -1,5 +1,5 @@
 import { useVersions } from "@/hooks/useVersions";
-import { HARDION_LABS, LATEST_RELEASE, REACTOS, REPO, RELEASES, VERSION } from "@/lib/links";
+import { HARDION_LABS, LATEST_RELEASE, REPO, RELEASES, VERSION } from "@/lib/links";
 import { ExternalIcon, GithubIcon, KynLogo } from "./Icons";
 
 export default function Footer() {
@@ -48,11 +48,6 @@ export default function Footer() {
             <li>
               <a href={LATEST_RELEASE} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 transition hover:text-zinc-950">
                 {VERSION} <ExternalIcon className="h-3 w-3" />
-              </a>
-            </li>
-            <li>
-              <a href={REACTOS} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 transition hover:text-zinc-950">
-                reactos/reactos <ExternalIcon className="h-3 w-3" />
               </a>
             </li>
             <li>

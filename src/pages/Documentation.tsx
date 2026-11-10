@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CodeBlock from "@/components/CodeBlock";
 import SectionHeading from "@/components/SectionHeading";
 import { ExternalIcon, GithubIcon } from "@/components/Icons";
-import { LATEST_RELEASE, REACTOS, REPO, RELEASES, VERSION, doc } from "@/lib/links";
+import { LATEST_RELEASE, REPO, RELEASES, VERSION, doc } from "@/lib/links";
 import { cn } from "@/utils/cn";
 
 const HELLO = `extern fn puts(s: *const u8) i32;
@@ -275,7 +275,7 @@ export default function Documentation() {
               <a href="#/download" className="font-medium text-zinc-900 underline decoration-amber-400 decoration-2 underline-offset-2">
                 Download
               </a>{" "}
-              page, which detects your operating system (Linux, Windows, macOS or ReactOS) automatically.
+              page, which detects your operating system (Linux, Windows or macOS) automatically.
             </p>
           </Sec>
 
@@ -454,7 +454,6 @@ export default function Documentation() {
                 [doc("build-system.md"), "Build System", "kyn-build and incremental builds"],
                 [doc("diagnostics.md"), "Diagnostics", "stable diagnostic codes"],
                 [doc("roadmap.md"), "Roadmap", "planned milestones"],
-                [REACTOS, "reactos/reactos", "open source OS compatible with Windows — a natural target for Kyn"],
               ].map(([href, label, desc]) => (
                 <li key={href}>
                   <a

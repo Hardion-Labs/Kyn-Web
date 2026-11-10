@@ -18,7 +18,6 @@ import {
   GithubIcon,
   GlobeIcon,
   KynLogo,
-  MonitorIcon,
   RefreshIcon,
   ShieldIcon,
   TerminalIcon,
@@ -27,7 +26,7 @@ import {
 } from "@/components/Icons";
 import SectionHeading from "@/components/SectionHeading";
 import { useVersions } from "@/hooks/useVersions";
-import { LATEST_RELEASE, REACTOS, RELEASES, REPO, VERSION, ZIP } from "@/lib/links";
+import { LATEST_RELEASE, RELEASES, REPO, VERSION, ZIP } from "@/lib/links";
 import { type OSKey, PLATFORMS, detectArch, detectOS } from "@/lib/os";
 import {
   findRecommendedDownload,
@@ -45,7 +44,6 @@ const OS_ICONS: Record<OSKey, ComponentType<{ className?: string }>> = {
   windows: WindowsIcon,
   macos: AppleIcon,
   linux: TerminalIcon,
-  reactos: MonitorIcon,
   android: GlobeIcon,
   ios: GlobeIcon,
   unknown: GlobeIcon,
@@ -710,7 +708,7 @@ export default function Download() {
       <div className="mt-14">
         <h2 className="text-xl font-bold tracking-tight text-zinc-950">Choose your platform</h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-600">
-          Build-from-source instructions for Linux, Windows, macOS and ReactOS.
+          Build-from-source instructions for Linux, Windows and macOS.
         </p>
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
           {PLATFORMS.map((p) => {
@@ -741,7 +739,7 @@ export default function Download() {
                   <CodeBlock
                     code={p.commands}
                     lang="sh"
-                    title={p.key === "reactos" ? "reactos" : p.key}
+                    title={p.key}
                     className="shadow-none [&>pre]:text-xs"
                   />
                 </div>
@@ -754,12 +752,6 @@ export default function Download() {
                     Releases
                     <ExternalIcon className="h-3 w-3" />
                   </a>
-                  {p.key === "reactos" && (
-                    <a href={REACTOS} target="_blank" rel="noreferrer" className="btn-secondary !px-3.5 !py-2 text-[13px]">
-                      reactos/reactos
-                      <ExternalIcon className="h-3 w-3" />
-                    </a>
-                  )}
                 </div>
               </div>
             );
@@ -775,7 +767,6 @@ export default function Download() {
             { href: REPO, label: "github.com/Hardion-Labs/Kyn", desc: "Official repository of the Kyn language" },
             { href: LATEST_RELEASE, label: `Release ${VERSION}`, desc: "Latest published preview, with detailed notes" },
             { href: RELEASES, label: "Todas as releases", desc: "Full history of the project's previews" },
-            { href: REACTOS, label: "github.com/reactos/reactos", desc: "Official ReactOS repository — open source OS compatible with Windows" },
           ].map((l) => (
             <li key={l.href}>
               <a

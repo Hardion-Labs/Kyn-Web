@@ -2,7 +2,6 @@ import type { ComponentType } from "react";
 import {
   AppleIcon,
   GlobeIcon,
-  MonitorIcon,
   TerminalIcon,
   WindowsIcon,
 } from "@/components/Icons";
@@ -17,7 +16,6 @@ const PLATFORM_ICONS: Record<string, ComponentType<{ className?: string }>> = {
   linux: TerminalIcon,
   windows: WindowsIcon,
   macos: AppleIcon,
-  reactos: MonitorIcon,
 };
 
 export interface PlatformSelectorProps {

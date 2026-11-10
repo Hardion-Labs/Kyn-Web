@@ -14,13 +14,12 @@ import {
   KynLogo,
   LayersIcon,
   LinkIcon,
-  MonitorIcon,
   SearchIcon,
   ShieldIcon,
   SlidersIcon,
 } from "@/components/Icons";
 import { useVersions } from "@/hooks/useVersions";
-import { LATEST_RELEASE, REACTOS, REPO, VERSION, doc } from "@/lib/links";
+import { LATEST_RELEASE, REPO, VERSION, doc } from "@/lib/links";
 import { formatPlatformName, formatReleaseDate } from "@/services/versions.service";
 
 const EXAMPLE = `extern fn puts(s: *const u8) i32;
@@ -137,13 +136,6 @@ const USECASES = [
     icon: LinkIcon,
     title: "Bridge to legacy C code",
     text: "Call existing C libraries through the C ABI, with no hidden wrappers or runtime layers.",
-  },
-  {
-    icon: MonitorIcon,
-    title: "ReactOS",
-    text: "An open source kernel compatible with Windows is exactly the kind of target Kyn was designed for.",
-    href: REACTOS,
-    hrefLabel: "github.com/reactos/reactos",
   },
 ];
 
@@ -350,16 +342,6 @@ export default function Home() {
                 </span>
                 <h3 className="mt-4 text-lg font-semibold text-zinc-950">{u.title}</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-zinc-600">{u.text}</p>
-                {u.href && (
-                  <a
-                    href={u.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-4 inline-flex items-center gap-1.5 font-mono text-xs text-zinc-500 transition hover:text-zinc-950"
-                  >
-                    {u.hrefLabel} <ExternalIcon className="h-3 w-3" />
-                  </a>
-                )}
               </div>
             ))}
           </div>
