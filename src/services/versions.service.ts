@@ -144,15 +144,15 @@ export function formatBytes(bytes: number): string {
   }
 
   const formatted = Number.isInteger(value)
-    ? value.toLocaleString("pt-BR", { maximumFractionDigits: 0 })
-    : value.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    ? value.toLocaleString("en-US", { maximumFractionDigits: 0 })
+    : value.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
   return `${formatted} ${units[unitIdx]}`;
 }
 
 export function formatExactBytes(bytes: number): string {
   if (!Number.isFinite(bytes) || bytes < 0) return "0 bytes";
-  return `${Math.round(bytes).toLocaleString("pt-BR")} bytes`;
+  return `${Math.round(bytes).toLocaleString("en-US")} bytes`;
 }
 
 export function formatReleaseDate(isoDate: string): string {
@@ -166,7 +166,7 @@ export function formatReleaseDate(isoDate: string): string {
 
   if (Number.isNaN(utcDate.getTime())) return isoDate;
 
-  return new Intl.DateTimeFormat("pt-BR", {
+  return new Intl.DateTimeFormat("en-US", {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -188,11 +188,9 @@ export function formatPlatformName(platform: string): string {
       return "Windows";
     case "macos":
       return "macOS";
-    case "reactos":
-      return "ReactOS";
     default: {
       const trimmed = platform.trim();
-      return trimmed ? trimmed.charAt(0).toUpperCase() + trimmed.slice(1) : "Desconhecida";
+      return trimmed ? trimmed.charAt(0).toUpperCase() + trimmed.slice(1) : "Unknown";
     }
   }
 }
@@ -203,14 +201,14 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 
 function assertNonEmptyString(value: unknown, field: string): string {
   if (typeof value !== "string" || !value.trim()) {
-    throw new VersionsServiceError("INVALID_SCHEMA", `Campo "${field}" inválido ou ausente.`);
+    throw new VersionsServiceError("INVALID_SCHEMA", `Field "${field}" is invalid or missing.`);
   }
   return value.trim();
 }
 
 function validateLanguage(raw: unknown): LanguageInfo {
   if (!isPlainObject(raw)) {
-    throw new VersionsServiceError("INVALID_SCHEMA", 'Bloco "language" inválido no manifesto.');
+    throw new VersionsServiceError("INVALID_SCHEMA", 'Invalid "language" block in the manifest.');
   }
 
   const name = assertNonEmptyString(raw.name, "language.name");
@@ -221,10 +219,10 @@ function validateLanguage(raw: unknown): LanguageInfo {
   try {
     parsedWebsite = new URL(website);
   } catch {
-    throw new VersionsServiceError("INVALID_SCHEMA", 'Campo "language.website" não é uma URL válida.');
+    throw new VersionsServiceError("INVALID_SCHEMA", 'Field "language.website" is not a valid URL.');
   }
   if (parsedWebsite.protocol !== "https:") {
-    throw new VersionsServiceError("INVALID_SCHEMA", 'Campo "language.website" deve usar HTTPS.');
+    throw new VersionsServiceError("INVALID_SCHEMA", 'Field "language.website" must use HTTPS.');
   }
 
   return { name, description, website: parsedWebsite.toString() };
@@ -233,7 +231,7 @@ function validateLanguage(raw: unknown): LanguageInfo {
 function validateDownload(raw: unknown, releaseIndex: number, downloadIndex: number): Download | null {
   const prefix = `releases[${releaseIndex}].downloads[${downloadIndex}]`;
   if (!isPlainObject(raw)) {
-    throw new VersionsServiceError("INVALID_SCHEMA", `Item "${prefix}" inválido.`);
+    throw new VersionsServiceError("INVALID_SCHEMA", `Invalid item "${prefix}".`);
   }
 
   const platform = assertNonEmptyString(raw.platform, `${prefix}.platform`);
@@ -241,16 +239,16 @@ function validateDownload(raw: unknown, releaseIndex: number, downloadIndex: num
   const filename = assertNonEmptyString(raw.filename, `${prefix}.filename`);
 
   if (typeof raw.size !== "number" || !Number.isFinite(raw.size) || raw.size < 0) {
-    throw new VersionsServiceError("INVALID_SCHEMA", `Tamanho inválido em "${prefix}.size".`);
+    throw new VersionsServiceError("INVALID_SCHEMA", `Invalid size in "${prefix}.size".`);
   }
 
   const url = assertNonEmptyString(raw.url, `${prefix}.url`);
   if (typeof raw.sha256 !== "string") {
-    throw new VersionsServiceError("INVALID_SCHEMA", `Campo "${prefix}.sha256" deve ser string.`);
+    throw new VersionsServiceError("INVALID_SCHEMA", `Field "${prefix}.sha256" must be a string.`);
   }
 
   if (!isAllowedDownloadUrl(url)) {
-    console.warn(`Download ignorado por URL não permitida em ${prefix}: ${url}`);
+    console.warn(`Download skipped because its URL is not allowed in ${prefix}: ${url}`);
     return null;
   }
 
@@ -267,28 +265,28 @@ function validateDownload(raw: unknown, releaseIndex: number, downloadIndex: num
 function validateRelease(raw: unknown, index: number): Release {
   const prefix = `releases[${index}]`;
   if (!isPlainObject(raw)) {
-    throw new VersionsServiceError("INVALID_SCHEMA", `Item "${prefix}" inválido.`);
+    throw new VersionsServiceError("INVALID_SCHEMA", `Invalid item "${prefix}".`);
   }
 
   const version = assertNonEmptyString(raw.version, `${prefix}.version`);
   const releaseDate = assertNonEmptyString(raw.releaseDate, `${prefix}.releaseDate`);
 
   if (typeof raw.stable !== "boolean") {
-    throw new VersionsServiceError("INVALID_SCHEMA", `Campo "${prefix}.stable" deve ser booleano.`);
+    throw new VersionsServiceError("INVALID_SCHEMA", `Field "${prefix}.stable" must be a boolean.`);
   }
   if (typeof raw.published !== "boolean") {
-    throw new VersionsServiceError("INVALID_SCHEMA", `Campo "${prefix}.published" deve ser booleano.`);
+    throw new VersionsServiceError("INVALID_SCHEMA", `Field "${prefix}.published" must be a boolean.`);
   }
   if (typeof raw.prerelease !== "boolean") {
-    throw new VersionsServiceError("INVALID_SCHEMA", `Campo "${prefix}.prerelease" deve ser booleano.`);
+    throw new VersionsServiceError("INVALID_SCHEMA", `Field "${prefix}.prerelease" must be a boolean.`);
   }
 
   if (!Array.isArray(raw.changelog) || raw.changelog.some((item) => typeof item !== "string")) {
-    throw new VersionsServiceError("INVALID_SCHEMA", `Campo "${prefix}.changelog" deve ser uma lista de textos.`);
+    throw new VersionsServiceError("INVALID_SCHEMA", `Field "${prefix}.changelog" must be a list of strings.`);
   }
 
   if (!Array.isArray(raw.downloads)) {
-    throw new VersionsServiceError("INVALID_SCHEMA", `Campo "${prefix}.downloads" deve ser uma lista.`);
+    throw new VersionsServiceError("INVALID_SCHEMA", `Field "${prefix}.downloads" must be a list.`);
   }
 
   const downloads = raw.downloads
@@ -308,27 +306,27 @@ function validateRelease(raw: unknown, index: number): Release {
 
 export function validateManifest(raw: unknown): VersionsManifest {
   if (!isPlainObject(raw)) {
-    throw new VersionsServiceError("INVALID_SCHEMA", "O manifesto de versões deve ser um objeto JSON.");
+    throw new VersionsServiceError("INVALID_SCHEMA", "The versions manifest must be a JSON object.");
   }
 
   if (typeof raw.schemaVersion !== "number" || !Number.isInteger(raw.schemaVersion)) {
-    throw new VersionsServiceError("INVALID_SCHEMA", 'Campo "schemaVersion" ausente ou inválido.');
+    throw new VersionsServiceError("INVALID_SCHEMA", 'Field "schemaVersion" is missing or invalid.');
   }
   if (raw.schemaVersion !== 1) {
     throw new VersionsServiceError(
       "INVALID_SCHEMA",
-      `Versão de esquema não suportada: ${raw.schemaVersion}.`
+      `Unsupported schema version: ${raw.schemaVersion}.`
     );
   }
 
   const language = validateLanguage(raw.language);
 
   if (typeof raw.latestVersion !== "string") {
-    throw new VersionsServiceError("INVALID_SCHEMA", 'Campo "latestVersion" deve ser uma string.');
+    throw new VersionsServiceError("INVALID_SCHEMA", 'Field "latestVersion" must be a string.');
   }
 
   if (!Array.isArray(raw.releases)) {
-    throw new VersionsServiceError("INVALID_SCHEMA", 'Campo "releases" deve ser uma lista.');
+    throw new VersionsServiceError("INVALID_SCHEMA", 'Field "releases" must be a list.');
   }
 
   const releases = raw.releases.map((rel, idx) => validateRelease(rel, idx));
@@ -516,14 +514,14 @@ export async function fetchVersionsManifest(options?: {
     } catch {
       throw new VersionsServiceError(
         "NETWORK_ERROR",
-        "Não foi possível conectar ao servidor para carregar o catálogo de versões."
+        "Could not connect to the server to load the version catalog."
       );
     }
 
     if (!response.ok) {
       throw new VersionsServiceError(
         "HTTP_ERROR",
-        `Não foi possível carregar o catálogo de versões (HTTP ${response.status}).`
+        `Could not load the version catalog (HTTP ${response.status}).`
       );
     }
 
@@ -533,7 +531,7 @@ export async function fetchVersionsManifest(options?: {
     } catch {
       throw new VersionsServiceError(
         "INVALID_JSON",
-        "O catálogo de versões recebido não é um JSON válido."
+        "The received version catalog is not valid JSON."
       );
     }
 

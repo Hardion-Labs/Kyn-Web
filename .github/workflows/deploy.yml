@@ -1,26 +1,26 @@
-# Compila o site (Vite + React + Tailwind) e publica a pasta dist/ no GitHub Pages.
+# Builds the site (Vite + React + Tailwind) and publishes the dist/ folder to GitHub Pages.
 #
-# CONFIGURAÇÃO NECESSÁRIA (uma única vez) no repositório:
+# REQUIRED SETUP (one time) in the repository:
 #   Settings → Pages → Build and deployment → Source: "GitHub Actions"
 #
-# Com "Deploy from a branch" o GitHub publica o código-fonte cru: um index.html
-# que aponta para /src/main.tsx, arquivo que o navegador não consegue executar.
-# O resultado é uma página totalmente em branco.
-name: Deploy no GitHub Pages
+# With "Deploy from a branch" GitHub publishes the raw source code: an index.html
+# that points to /src/main.tsx, a file the browser cannot run.
+# The result is a completely blank page.
+name: Deploy to GitHub Pages
 
 on:
-  # Publica a cada push na branch principal
+  # Publishes on every push to the main branch
   push:
     branches: [main]
-  # Permite rodar manualmente pela aba Actions ("Run workflow")
+  # Allows running manually from the Actions tab ("Run workflow")
   workflow_dispatch:
 
-# Permissões mínimas por padrão; o job de deploy declara as que precisa.
+# Minimal permissions by default; the deploy job declares the ones it needs.
 permissions:
   contents: read
 
-# Um deploy por vez. Não cancela um deploy em andamento: a execução mais
-# recente espera a atual terminar.
+# One deployment at a time. Does not cancel a deployment in progress: the most
+# recent run waits for the current one to finish.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -30,60 +30,60 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     outputs:
-      # Nome do artefato enviado nesta tentativa (ver o último passo)
+      # Name of the artifact uploaded in this attempt (see the last step)
       artifact: github-pages-${{ github.run_attempt }}
     steps:
-      - name: Baixar o código
+      - name: Download the code
         uses: actions/checkout@v7
 
-      - name: Configurar o Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
 
-      - name: Instalar as dependências
+      - name: Install dependencies
         run: npm ci
 
-      - name: Compilar o site
+      - name: Build the site
         run: npm run build
 
-      - name: Enviar a pasta dist/ para o Pages
+      - name: Upload the dist/ folder to Pages
         uses: actions/upload-pages-artifact@v5
         with:
-          # Um nome por tentativa: se a execução for repetida ("Re-run jobs"),
-          # não ficam dois artefatos com o mesmo nome, o que faria o deploy falhar.
+          # One name per attempt: if the run is repeated ("Re-run jobs"),
+          # there won't be two artifacts with the same name, which would make the deploy fail.
           name: github-pages-${{ github.run_attempt }}
           path: dist
 
-  # Job separado do build: só ele recebe permissão para publicar, e o artefato
-  # já está disponível quando o deploy começa.
+  # Separate job from the build: only this one gets permission to publish, and the
+  # artifact is already available when the deploy starts.
   deploy:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      pages: write # publicar no GitHub Pages
-      id-token: write # comprovar a origem do deploy (OIDC)
+      pages: write # publish to GitHub Pages
+      id-token: write # verify the origin of the deploy (OIDC)
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      # Se o Pages ainda estiver em "Deploy from a branch", o GitHub também publica
-      # o código-fonte cru a cada push e o site pode voltar a ficar em branco.
-      # Em vez de deixar isso passar em silêncio, falha com uma instrução clara.
-      - name: Conferir a configuração do Pages
+      # If Pages is still set to "Deploy from a branch", GitHub also publishes the
+      # raw source code on every push and the site may go blank again.
+      # Instead of letting this pass silently, it fails with a clear instruction.
+      - name: Check the Pages configuration
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           build_type="$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.build_type' 2>/dev/null || true)"
-          echo "Pages build_type: ${build_type:-desconhecido}"
+          echo "Pages build_type: ${build_type:-unknown}"
           if [ "$build_type" = "legacy" ]; then
-            echo "::error title=GitHub Pages está em Deploy from a branch::Abra ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/settings/pages e, em Build and deployment → Source, selecione GitHub Actions. Depois rode esta execução de novo (botão Re-run jobs)."
+            echo "::error title=GitHub Pages is set to Deploy from a branch::Open ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/settings/pages and, under Build and deployment → Source, select GitHub Actions. Then run this workflow again (Re-run jobs button)."
             exit 1
           fi
 
-      - name: Publicar no GitHub Pages
+      - name: Publish to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
         with:

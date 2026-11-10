@@ -72,7 +72,7 @@ async function runLoad(force = false): Promise<void> {
     const message =
       err instanceof Error && err.message
         ? err.message
-        : "Ocorreu um erro inesperado ao consultar as versões disponíveis.";
+        : "An unexpected error occurred while checking the available versions.";
 
     emitSnapshot({
       status: "error",

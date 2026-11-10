@@ -14,13 +14,12 @@ import {
   KynLogo,
   LayersIcon,
   LinkIcon,
-  MonitorIcon,
   SearchIcon,
   ShieldIcon,
   SlidersIcon,
 } from "@/components/Icons";
 import { useVersions } from "@/hooks/useVersions";
-import { LATEST_RELEASE, REACTOS, REPO, VERSION, doc } from "@/lib/links";
+import { LATEST_RELEASE, REPO, VERSION, doc } from "@/lib/links";
 import { formatPlatformName, formatReleaseDate } from "@/services/versions.service";
 
 const EXAMPLE = `extern fn puts(s: *const u8) i32;
@@ -44,133 +43,126 @@ fn main() i32 {
 `;
 
 const STATS = [
-  { value: "Sem GC", label: "alocação explícita, escrita no código-fonte" },
-  { value: "4 perfis", label: "de segurança: debug, safe, release e fast" },
-  { value: "LLVM", label: "backend nativo via IR textual" },
-  { value: "C ABI", label: "interop direta com C em x86_64 Linux" },
-  { value: "MIT", label: "licença open source" },
-  { value: VERSION, label: "preview publicada e em evolução" },
+  { value: "No GC", label: "explicit allocation, written in the source code" },
+  { value: "4 profiles", label: "security profiles: debug, safe, release and fast" },
+  { value: "LLVM", label: "native backend via textual IR" },
+  { value: "C ABI", label: "direct interop with C on x86_64 Linux" },
+  { value: "MIT", label: "open source license" },
+  { value: VERSION, label: "published preview, evolving" },
 ];
 
 const PILLARS = [
   {
     icon: SlidersIcon,
-    title: "Controle explícito",
-    text: "Alocação, ponteiros, mutabilidade e conversões aparecem no código-fonte. Nada de alocações ocultas ou fluxo de controle invisível.",
+    title: "Explicit control",
+    text: "Allocation, pointers, mutability and conversions appear in the source code. No hidden allocations or invisible control flow.",
   },
   {
     icon: ShieldIcon,
-    title: "Segurança verificável",
-    text: "Verificações em tempo de compilação para o que pode ser provado. Verificações em runtime, quando existem, nunca são removidas silenciosamente.",
+    title: "Verifiable safety",
+    text: "Compile-time checks for whatever can be proven. Runtime checks, when they exist, are never silently removed.",
   },
   {
     icon: GaugeIcon,
-    title: "Desempenho previsível",
-    text: "Sem coletor de lixo, sem inferência de ownership, sem contagem de referências implícita. O código-fonte carrega custos de máquina previsíveis.",
+    title: "Predictable performance",
+    text: "No garbage collector, no ownership inference, no implicit reference counting. The source code carries predictable machine costs.",
   },
 ];
 
 const DESIGN = [
-  { code: "let / var", desc: "let é imutável; var é mutável." },
-  { code: "*T e *const T", desc: "ponteiros são sempre explícitos no tipo." },
-  { code: "p->campo / p.campo", desc: "-> em ponteiros, . em valores." },
-  { code: "condição: bool", desc: "condicionais exigem bool, sem coerções." },
-  { code: "x as i64", desc: "conversões numéricas exigem as." },
-  { code: "import relativo", desc: "imports determinísticos com namespaces por arquivo." },
+  { code: "let / var", desc: "let is immutable; var is mutable." },
+  { code: "*T e *const T", desc: "pointers are always explicit in the type." },
+  { code: "p->field / p.field", desc: "-> on pointers, . on values." },
+  { code: "condition: bool", desc: "conditionals require bool, with no coercions." },
+  { code: "x as i64", desc: "numeric conversions require as." },
+  { code: "relative import", desc: "deterministic imports with per-file namespaces." },
 ];
 
 const FEATURES = [
   {
     icon: SearchIcon,
-    title: "Análise estática",
-    text: "Leituras não inicializadas, divisão por zero provável, overflow constante, shifts fora de faixa e condições constantes são detectados na compilação.",
+    title: "Static analysis",
+    text: "Uninitialized reads, likely division by zero, constant overflow, out-of-range shifts and constant conditions are detected at compile time.",
   },
   {
     icon: FileIcon,
-    title: "Diagnósticos com códigos estáveis",
-    text: "Erros têm códigos documentados (ex.: E0506 para desreferência nula provável), com cobertura de documentação automatizada.",
+    title: "Diagnostics with stable codes",
+    text: "Errors have documented codes (e.g., E0506 for a likely null dereference), with automated documentation coverage.",
   },
   {
     icon: ShieldIcon,
-    title: "Traps em runtime",
-    text: "Limites de array/slice, overflow aritmético, divisão por zero, shifts inválidos e desreferência de ponteiro nulo — em todos os perfis.",
+    title: "Runtime traps",
+    text: "Array/slice bounds, arithmetic overflow, division by zero, invalid shifts and null pointer dereference — in every profile.",
   },
   {
     icon: BoxIcon,
     title: "kyn-build incremental",
-    text: "Projetos mistos Kyn + C + Zig com builds incrementais content-addressed, via arquivos kyn.build.",
+    text: "Mixed Kyn + C + Zig projects with content-addressed incremental builds, via kyn.build files.",
   },
   {
     icon: LinkIcon,
     title: "C ABI nativa",
-    text: "extern fn / export fn permitem chamar e ser chamado por C na ABI System V de x86_64 Linux, incluindo slices { ptr, usize }.",
+    text: "extern fn / export fn let you call and be called from C through the System V ABI on x86_64 Linux, including { ptr, usize } slices.",
   },
   {
     icon: CheckIcon,
-    title: "Testes de integração",
-    text: "Suíte end-to-end com programas positivos/negativos, os quatro perfis de segurança e um corpus determinístico de 900 casos de robustez.",
+    title: "Integration tests",
+    text: "End-to-end suite with positive and negative programs, the four security profiles and a deterministic corpus of 900 robustness cases.",
   },
 ];
 
 const USECASES = [
   {
     icon: CpuIcon,
-    title: "Kernels e drivers",
-    text: "O núcleo do projeto: Kyn nasceu para escrever sistemas operacionais, drivers e código de baixo nível com segurança verificável.",
+    title: "Kernels and drivers",
+    text: "The core of the project: Kyn was born to write operating systems, drivers and low-level code with verifiable safety.",
   },
   {
     icon: BoxIcon,
-    title: "Sistemas embarcados",
-    text: "Sem GC e sem runtime oculto: o custo de cada linha é previsível, ideal para dispositivos com recursos limitados.",
+    title: "Embedded systems",
+    text: "No GC and no hidden runtime: the cost of every line is predictable, ideal for resource-constrained devices.",
   },
   {
     icon: LayersIcon,
-    title: "Runtimes e VMs",
-    text: "Interop direta com C e Zig torna Kyn uma candidata natural para runtimes, interpretadores e máquinas virtuais.",
+    title: "Runtimes and VMs",
+    text: "Direct interop with C and Zig makes Kyn a natural candidate for runtimes, interpreters and virtual machines.",
   },
   {
     icon: GaugeIcon,
-    title: "Software nativo de alta performance",
-    text: "Backend LLVM com perfis -O0 a -O3 e verificações que nunca são desligadas silenciosamente.",
+    title: "High-performance native software",
+    text: "LLVM backend with -O0 to -O3 profiles and checks that are never silently turned off.",
   },
   {
     icon: LinkIcon,
-    title: "Ponte com código legado em C",
-    text: "Chame bibliotecas C existentes através da C ABI, sem wrappers escondidos nem camadas de runtime.",
-  },
-  {
-    icon: MonitorIcon,
-    title: "ReactOS",
-    text: "Um kernel open source compatível com Windows é exatamente o tipo de alvo para o qual Kyn foi projetada.",
-    href: REACTOS,
-    hrefLabel: "github.com/reactos/reactos",
+    title: "Bridge to legacy C code",
+    text: "Call existing C libraries through the C ABI, with no hidden wrappers or runtime layers.",
   },
 ];
 
 const TIMELINE = [
   {
     tag: "v0.1.0-alpha.2",
-    status: "publicada",
+    status: "published",
     tone: "emerald" as const,
-    text: "Núcleo verificado: lexer, parser, type checker, analisador estático, IR tipada e backend LLVM. CLI kync com check, emit-llvm, emit-obj, build e run.",
+    text: "Verified core: lexer, parser, type checker, static analyzer, typed IR and LLVM backend. The kync CLI provides check, emit-llvm, emit-obj, build and run.",
   },
   {
     tag: "v0.1.0-alpha.3",
-    status: "atual",
+    status: "current",
     tone: "amber" as const,
-    text: "C ABI ampliada (escalares, SSE, slices), slicing const-polimórfico ([..], [start..], [..end], .ptr, .len) e imports relativos com aliases e namespaces por módulo.",
+    text: "Extended C ABI (scalars, SSE, slices), const-polymorphic slicing ([..], [start..], [..end], .ptr, .len) and relative imports with aliases and per-module namespaces.",
   },
   {
-    tag: "Em andamento",
-    status: "parcial",
+    tag: "In progress",
+    status: "partial",
     tone: "yellow" as const,
-    text: "Casos SSE de agregados mistos na C ABI e a política explícita de verificações mantidas em todos os perfis de compilação.",
+    text: "SSE cases for mixed aggregates in the C ABI, and the explicit policy of keeping checks in every compilation profile.",
   },
   {
-    tag: "Planejado",
+    tag: "Planned",
     status: "roadmap",
     tone: "zinc" as const,
-    text: "Módulos e manifesto de pacote, genéricos/traits, standard library e runtime, além de defer, for, switch/match, closures e exceções.",
+    text: "Modules and package manifest, generics/traits, standard library and runtime, plus defer, for, switch/match, closures and exceptions.",
   },
 ];
 
@@ -196,7 +188,7 @@ export default function Home() {
           <div className="animate-fade-up">
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">
               <KynLogo className="h-3.5 w-3.5" />
-              {VERSION} — preview publicada, em desenvolvimento ativo
+              {VERSION} — published preview, under active development
             </div>
             <h1 className="mt-6 flex items-center gap-4 text-6xl font-extrabold tracking-tight text-zinc-950 sm:text-7xl">
               <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-zinc-950 p-3 sm:h-16 sm:w-16 sm:p-3.5">
@@ -205,23 +197,23 @@ export default function Home() {
               Kyn
             </h1>
             <p className="mt-6 text-2xl font-semibold leading-snug text-zinc-900 sm:text-[1.7rem]">
-              Controle explícito. Segurança verificável. Desempenho previsível.
+              Explicit control. Verifiable safety. Predictable performance.
             </p>
             <p className="mt-4 max-w-xl text-lg leading-relaxed text-zinc-600">
-              Kyn é uma linguagem de programação de sistemas da{" "}
-              <span className="font-semibold text-zinc-900">Hardion Labs</span>, criada para kernels,
-              drivers, sistemas embarcados, runtimes e software nativo de alto desempenho. Sem GC e sem
-              mágica oculta: cada linha do código-fonte carrega um custo de máquina previsível.
+              Kyn is a systems programming language from{" "}
+              <span className="font-semibold text-zinc-900">Hardion Labs</span>, built for kernels,
+              drivers, embedded systems, runtimes and high-performance native software. No GC and no
+              hidden magic: every line of source code carries a predictable machine cost.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a href="#/download" className="btn-primary !px-5 !py-3">
                 <DownloadIcon className="h-4 w-4" />
-                {latestVersion ? `Baixar ${latestVersion}` : "Baixar agora"}
+                {latestVersion ? `Download ${latestVersion}` : "Download now"}
                 <ArrowRightIcon className="h-4 w-4" />
               </a>
-              <a href="#/documentacao" className="btn-secondary !px-5 !py-3">
+              <a href="#/documentation" className="btn-secondary !px-5 !py-3">
                 <BookIcon className="h-4 w-4" />
-                Documentação
+                Documentation
               </a>
               <a
                 href={REPO}
@@ -236,24 +228,24 @@ export default function Home() {
             </div>
             {latestRelease && (
               <p className="mt-4 font-mono text-xs text-zinc-500">
-                Catálogo de distribuição: <span className="font-semibold text-zinc-800">{latestRelease.version}</span>
+                Distribution catalog: <span className="font-semibold text-zinc-800">{latestRelease.version}</span>
                 {" · "}
                 {formatReleaseDate(latestRelease.releaseDate)}
                 {latestPlatforms.length > 0 && ` · ${latestPlatforms.join(" / ")}`}
               </p>
             )}
             <div className="mt-6 flex flex-wrap gap-x-5 gap-y-1 font-mono text-xs text-zinc-500">
-              <span>licença MIT</span>
+              <span>MIT license</span>
               <span>Zig 0.17.0</span>
               <span>backend LLVM</span>
-              <span>x86_64 Linux validado</span>
+              <span>x86_64 Linux validated</span>
             </div>
           </div>
 
           <div className="animate-fade-up" style={{ animationDelay: "120ms" }}>
             <CodeBlock code={EXAMPLE} lang="kyn" title="examples/hello.kyn" />
             <p className="mt-3 text-center font-mono text-xs text-zinc-400">
-              rode com: ./zig-out/bin/kync run examples/hello.kyn
+              run with: ./zig-out/bin/kync run examples/hello.kyn
             </p>
           </div>
         </div>
@@ -273,13 +265,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ PODER ============ */}
+      {/* ============ POWER ============ */}
       <section id="poder" className="scroll-mt-24 border-b border-zinc-100 bg-white">
         <div className="mx-auto max-w-6xl px-6 py-20 lg:py-24">
           <SectionHeading
-            kicker="O poder de Kyn"
-            title="Uma linguagem que não esconde nada"
-            description="Kyn favorece a explicitidade sobre a inferência, a correção provável sobre a conveniência e a geração de código previsível sobre máquinas de runtime ocultas. Três princípios definem o projeto:"
+            kicker="The power of Kyn"
+            title="A language that hides nothing"
+            description="Kyn favors explicitness over inference, likely correctness over convenience, and predictable code generation over hidden runtime machinery. Three principles define the project:"
           />
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {PILLARS.map((p) => (
@@ -298,10 +290,10 @@ export default function Home() {
 
           <div className="mt-14 grid gap-6 lg:grid-cols-2">
             <div>
-              <h3 className="text-xl font-semibold text-zinc-950">Escolhas de design visíveis no código</h3>
+              <h3 className="text-xl font-semibold text-zinc-950">Design choices visible in the code</h3>
               <p className="mt-3 text-sm leading-relaxed text-zinc-600">
-                Cada decisão aparece no código-fonte. O exemplo ao lado mostra um programa Kyn real do
-                repositório oficial — e nele já dá para ver a filosofia da linguagem.
+                Every decision shows up in the source code. The example beside it is a real Kyn program from the
+                official repository — and it already shows the philosophy of the language.
               </p>
               <ul className="mt-6 space-y-3">
                 {DESIGN.map((d) => (
@@ -331,13 +323,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ POTENCIAL ============ */}
+      {/* ============ POTENTIAL ============ */}
       <section id="potencial" className="scroll-mt-24 border-b border-zinc-100 bg-zinc-50/60">
         <div className="mx-auto max-w-6xl px-6 py-20 lg:py-24">
           <SectionHeading
-            kicker="Potencial"
-            title="Onde Kyn faz a diferença"
-            description="De kernels de sistemas operacionais a runtimes e código embarcado: Kyn foi desenhada para os lugares onde o controle explícito e o desempenho previsível são requisitos, não opções."
+            kicker="Potential"
+            title="Where Kyn makes a difference"
+            description="From operating system kernels to runtimes and embedded code: Kyn was designed for places where explicit control and predictable performance are requirements, not options."
           />
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {USECASES.map((u) => (
@@ -350,29 +342,19 @@ export default function Home() {
                 </span>
                 <h3 className="mt-4 text-lg font-semibold text-zinc-950">{u.title}</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-zinc-600">{u.text}</p>
-                {u.href && (
-                  <a
-                    href={u.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-4 inline-flex items-center gap-1.5 font-mono text-xs text-zinc-500 transition hover:text-zinc-950"
-                  >
-                    {u.hrefLabel} <ExternalIcon className="h-3 w-3" />
-                  </a>
-                )}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ============ EVOLUÇÃO ============ */}
+      {/* ============ EVOLUTION ============ */}
       <section id="evolucao" className="scroll-mt-24 border-b border-zinc-100 bg-white">
         <div className="mx-auto max-w-6xl px-6 py-20 lg:py-24">
           <SectionHeading
-            kicker="Evolução"
-            title="Uma linguagem em construção transparente"
-            description="Kyn está em alpha — e o roadmap é público. Cada release amplia o núcleo verificado sem remover nenhuma verificação implementada."
+            kicker="Evolution"
+            title="A language built in the open"
+            description="Kyn is in alpha — and the roadmap is public. Each release expands the verified core without removing any implemented check."
           />
           <ol className="relative mt-12 ml-2 border-l border-zinc-200 pl-8">
             {TIMELINE.map((t) => (
@@ -394,7 +376,7 @@ export default function Home() {
             rel="noreferrer"
             className="btn-ghost mt-8 !px-0 font-medium text-zinc-900"
           >
-            Ver o roadmap completo no repositório <ExternalIcon className="h-3.5 w-3.5" />
+            View the full roadmap in the repository <ExternalIcon className="h-3.5 w-3.5" />
           </a>
         </div>
       </section>
@@ -408,23 +390,23 @@ export default function Home() {
               <KynLogo className="h-full w-full text-zinc-950" />
             </span>
             <h2 className="relative mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Pronto para escrever código de sistema previsível?
+              Ready to write predictable systems code?
             </h2>
             <p className="relative mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-400">
-              Clone o repositório oficial, compile o toolchain com Zig e rode seu primeiro programa Kyn
-              em minutos.
+              Clone the official repository, build the toolchain with Zig and run your first Kyn program
+              in minutes.
             </p>
             <div className="relative mt-8 flex flex-wrap items-center justify-center gap-3">
               <a href="#/download" className="btn-amber !px-5 !py-3">
                 <DownloadIcon className="h-4 w-4" />
-                {latestVersion ? `Baixar o Kyn ${latestVersion}` : "Baixar o Kyn"}
+                {latestVersion ? `Download Kyn ${latestVersion}` : "Download Kyn"}
               </a>
               <a
-                href="#/documentacao"
+                href="#/documentation"
                 className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 px-5 py-3 text-sm font-semibold text-zinc-100 transition hover:border-zinc-500 hover:bg-zinc-900"
               >
                 <BookIcon className="h-4 w-4" />
-                Ler a documentação
+                Read the documentation
               </a>
               <a
                 href={LATEST_RELEASE}
@@ -433,7 +415,7 @@ export default function Home() {
                 className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-zinc-400 transition hover:text-white"
               >
                 <GithubIcon className="h-4 w-4" />
-                {VERSION} no GitHub
+                {VERSION} on GitHub
                 <ExternalIcon className="h-3.5 w-3.5" />
               </a>
             </div>

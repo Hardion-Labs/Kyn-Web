@@ -1,31 +1,43 @@
 # Kyn-Web
 
-Site da linguagem [Kyn](https://github.com/Hardion-Labs/Kyn), da Hardion Labs:
+Website for the [Kyn](https://github.com/Hardion-Labs/Kyn) language, by Hardion Labs:
 <https://hardion-labs.github.io/Kyn-Web/>
 
-Feito com Vite, React, TypeScript e Tailwind CSS.
+Built with Vite, React, TypeScript and Tailwind CSS.
 
-## Desenvolvimento
+## Development
 
-Requer Node.js 22.12 ou superior (o deploy usa a versão 24).
+Requires Node.js 22.12 or higher (the deploy uses version 24).
 
 ```sh
-npm ci           # instala as dependências
-npm run dev      # servidor de desenvolvimento
-npm run build    # gera o site em dist/
-npm run preview  # serve localmente o conteúdo de dist/
+npm ci           # installs the dependencies
+npm run dev      # development server
+npm run build    # generates the site in dist/
+npm run preview  # serves the contents of dist/ locally
 ```
 
-## Publicação no GitHub Pages
+## Publishing to GitHub Pages
 
-A cada push na branch `main`, o workflow
-[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) compila o site e
-publica a pasta `dist/` no GitHub Pages. Também dá para rodá-lo manualmente em
-**Actions → Deploy no GitHub Pages → Run workflow**.
+On every push to the `main` branch, the workflow
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) builds the site and
+publishes the `dist/` folder to GitHub Pages. You can also run it manually in
+**Actions → Deploy to GitHub Pages → Run workflow**.
 
-Configuração necessária (uma única vez): em **Settings → Pages → Build and
-deployment → Source**, selecione **GitHub Actions**.
+Required setup (one time only): in **Settings → Pages → Build and
+deployment → Source**, select **GitHub Actions**.
 
-> **Por que não "Deploy from a branch"?** Nesse modo o GitHub Pages publica o
-> código-fonte sem compilar. O `index.html` da raiz aponta para `/src/main.tsx`,
-> que o navegador não consegue executar, e o site aparece totalmente em branco.
+> **Why not "Deploy from a branch"?** In that mode GitHub Pages publishes the
+> source code without building it. The root `index.html` points to `/src/main.tsx`,
+> which the browser cannot run, and the site shows up completely blank.
+
+## Routes
+
+The site uses hash routes:
+
+| Page            | URL                    |
+| --------------- | ---------------------- |
+| Home            | `#/`                   |
+| Download        | `#/download`           |
+| Documentation   | `#/documentation`      |
+
+The old Portuguese links (`#/documentacao`, `#/baixar`, `#/docs`) are still recognized and open the new pages.

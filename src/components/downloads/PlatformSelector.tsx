@@ -2,7 +2,6 @@ import type { ComponentType } from "react";
 import {
   AppleIcon,
   GlobeIcon,
-  MonitorIcon,
   TerminalIcon,
   WindowsIcon,
 } from "@/components/Icons";
@@ -17,7 +16,6 @@ const PLATFORM_ICONS: Record<string, ComponentType<{ className?: string }>> = {
   linux: TerminalIcon,
   windows: WindowsIcon,
   macos: AppleIcon,
-  reactos: MonitorIcon,
 };
 
 export interface PlatformSelectorProps {
@@ -84,7 +82,7 @@ export default function PlatformSelector({
   if (platforms.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-zinc-200 bg-zinc-50/70 px-4 py-4 text-sm text-zinc-500">
-        Nenhum arquivo distribuível disponível para esta versão.
+        No distributable files are available for this version.
       </div>
     );
   }
@@ -102,13 +100,13 @@ export default function PlatformSelector({
       <div>
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
-            Sistema operacional
+            Operating system
           </span>
           {normalizedDetectedPlatform &&
             normalizedDetectedPlatform !== "unknown" &&
             !detectedAvailable && (
               <span className="text-xs text-zinc-500">
-                Sem pacote para {formatPlatformName(normalizedDetectedPlatform)} nesta versão
+                No package for {formatPlatformName(normalizedDetectedPlatform)} in this version
               </span>
             )}
         </div>
@@ -147,7 +145,7 @@ export default function PlatformSelector({
                         : "bg-amber-100 text-amber-800"
                     )}
                   >
-                    Detectado
+                    Detected
                   </span>
                 )}
               </button>
@@ -159,7 +157,7 @@ export default function PlatformSelector({
       {architectures.length > 0 && (
         <div>
           <span className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
-            Arquitetura
+            Architecture
           </span>
           <div className="mt-2.5 flex flex-wrap gap-2">
             {architectures.map((arch) => {
@@ -182,7 +180,7 @@ export default function PlatformSelector({
                   <span>{arch}</span>
                   {isDetected && (
                     <span className="rounded bg-amber-200/70 px-1.5 py-0.5 font-sans text-[10px] font-semibold text-amber-900">
-                      seu CPU
+                      your CPU
                     </span>
                   )}
                 </button>

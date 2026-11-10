@@ -102,16 +102,16 @@ export default function VersionCard({
             <h3 className="font-mono text-xl font-bold text-zinc-950">{release.version}</h3>
             {isLatest && (
               <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
-                Atual
+                Current
               </span>
             )}
             {release.stable && !release.prerelease ? (
               <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-800">
-                Estável
+                Stable
               </span>
             ) : (
               <span className="rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-semibold text-yellow-800">
-                Pré-lançamento
+                Pre-release
               </span>
             )}
           </div>
@@ -120,7 +120,7 @@ export default function VersionCard({
             title={release.releaseDate}
           >
             <CalendarIcon className="h-3.5 w-3.5" />
-            Publicado em {formatReleaseDate(release.releaseDate)}
+            Published on {formatReleaseDate(release.releaseDate)}
           </p>
         </div>
 
@@ -137,7 +137,7 @@ export default function VersionCard({
               )}
             >
               {isSelected && <CheckIcon className="h-3.5 w-3.5 text-amber-400" />}
-              {isSelected ? "Selecionada" : "Selecionar versão"}
+              {isSelected ? "Selected" : "Select version"}
             </button>
           )}
           <button
@@ -146,7 +146,7 @@ export default function VersionCard({
             onClick={() => setExpanded((prev) => !prev)}
             className="btn-secondary !px-3.5 !py-2 !text-xs"
           >
-            {expanded ? "Ocultar arquivos" : `Ver arquivos (${release.downloads.length})`}
+            {expanded ? "Hide files" : `View files (${release.downloads.length})`}
             <ChevronDownIcon
               className={cn(
                 "h-3.5 w-3.5 transition-transform",
@@ -157,11 +157,11 @@ export default function VersionCard({
         </div>
       </div>
 
-      {/* Resumo das plataformas e arquiteturas disponíveis nesta versão */}
+      {/* Summary of the platforms and architectures available in this version */}
       <div className="mt-4 flex flex-wrap gap-2">
         {release.downloads.length === 0 ? (
           <span className="rounded-md bg-zinc-100 px-2.5 py-1 text-xs text-zinc-500">
-            Sem arquivos binários anexados
+            No binary files attached
           </span>
         ) : (
           release.downloads.map((d) => (
@@ -189,7 +189,7 @@ export default function VersionCard({
         </div>
       )}
 
-      {/* Área expandida com seletor e downloads específicos desta versão */}
+      {/* Expanded area with the selector and the downloads for this version */}
       {expanded && (
         <div className="mt-5 space-y-4 border-t border-zinc-200 pt-5">
           <PlatformSelector
@@ -214,7 +214,7 @@ export default function VersionCard({
           ) : (
             release.downloads.length > 0 && (
               <p className="text-sm text-zinc-500">
-                Nenhum arquivo encontrado para a combinação selecionada.
+                No files found for the selected combination.
               </p>
             )
           )}

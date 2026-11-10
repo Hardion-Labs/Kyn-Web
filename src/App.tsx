@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import Documentacao from "@/pages/Documentacao";
+import Documentation from "@/pages/Documentation";
 import Download from "@/pages/Download";
 import Home from "@/pages/Home";
 import { useHashRoute } from "@/lib/router";
@@ -19,7 +19,7 @@ export default function App() {
       <main className="flex-1">
         {route === "home" && <Home />}
         {route === "download" && <Download />}
-        {route === "documentacao" && <Documentacao />}
+        {route === "documentation" && <Documentation />}
       </main>
       <Footer />
     </div>

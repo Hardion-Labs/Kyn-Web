@@ -50,7 +50,7 @@ body {
   }
 }
 
-/* inline code dentro da documentação (fora de blocos <pre>) */
+/* inline code inside the documentation (outside <pre> blocks) */
 .doc :not(pre) > code {
   border-radius: 0.375rem;
   background-color: #f4f4f5;
