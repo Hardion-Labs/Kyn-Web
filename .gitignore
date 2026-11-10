@@ -1,0 +1,11 @@
+# Dependências (instaladas com `npm ci`)
+node_modules/
+
+# Saída do build (gerada por `npm run build`; o GitHub Actions publica esta pasta)
+dist/
+
+# Arquivos locais e logs
+*.local
+*.log
+.DS_Store
+Thumbs.db
