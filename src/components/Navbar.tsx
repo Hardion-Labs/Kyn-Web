@@ -3,7 +3,7 @@ import { useVersions } from "@/hooks/useVersions";
 import type { Route } from "@/lib/router";
 import { REPO, VERSION } from "@/lib/links";
 import { cn } from "@/utils/cn";
-import { DownloadIcon, GithubIcon, MenuIcon, XIcon, Zap } from "./Icons";
+import { DownloadIcon, GithubIcon, KynLogo, MenuIcon, XIcon } from "./Icons";
 
 const LINKS: { route: Route; label: string; hash: string }[] = [
   { route: "home", label: "Home", hash: "#/" },
@@ -20,8 +20,8 @@ export default function Navbar({ route }: { route: Route }) {
     <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/85 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <a href="#/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-950">
-            <Zap className="h-4 w-4 text-amber-400" />
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-950 p-1.5">
+            <KynLogo className="h-full w-full text-white" />
           </span>
           <span className="text-lg font-bold tracking-tight text-zinc-950">Kyn</span>
           <span className="hidden rounded-full border border-zinc-200 px-2 py-0.5 font-mono text-[11px] text-zinc-500 sm:inline">

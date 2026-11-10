@@ -25,6 +25,17 @@ function F({ className, children }: { className?: string; children: ReactNode })
   );
 }
 
+export function KynLogo({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 858 858" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M 812.0,40.0 L 556.0,41.0 L 40.0,558.0 L 40.0,810.0 Z" />
+      <path d="M 241.0,41.0 L 40.0,41.0 L 40.0,418.0 L 242.0,215.0 Z" />
+      <path d="M 443.0,535.0 L 569.0,663.0 L 817.0,662.0 L 569.0,409.0 Z" />
+      <path d="M 294.0,677.0 L 294.0,679.0 L 449.0,835.0 L 626.0,835.0 L 383.0,588.0 Z" />
+    </svg>
+  );
+}
+
 export function Zap({ className }: { className?: string }) {
   return (
     <F className={className}>

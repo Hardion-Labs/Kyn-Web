@@ -1,6 +1,6 @@
 import { useVersions } from "@/hooks/useVersions";
 import { HARDION_LABS, LATEST_RELEASE, REACTOS, REPO, RELEASES, VERSION } from "@/lib/links";
-import { ExternalIcon, GithubIcon, Zap } from "./Icons";
+import { ExternalIcon, GithubIcon, KynLogo } from "./Icons";
 
 export default function Footer() {
   const { latestVersion } = useVersions();
@@ -11,8 +11,8 @@ export default function Footer() {
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-950">
-              <Zap className="h-4 w-4 text-amber-400" />
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-950 p-1.5">
+              <KynLogo className="h-full w-full text-white" />
             </span>
             <span className="text-lg font-bold tracking-tight text-zinc-950">Kyn</span>
           </div>

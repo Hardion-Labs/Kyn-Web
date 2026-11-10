@@ -11,13 +11,13 @@ import {
   FileIcon,
   GaugeIcon,
   GithubIcon,
+  KynLogo,
   LayersIcon,
   LinkIcon,
   MonitorIcon,
   SearchIcon,
   ShieldIcon,
   SlidersIcon,
-  Zap,
 } from "@/components/Icons";
 import { useVersions } from "@/hooks/useVersions";
 import { LATEST_RELEASE, REACTOS, REPO, VERSION, doc } from "@/lib/links";
@@ -195,12 +195,12 @@ export default function Home() {
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-16 lg:grid-cols-[1.05fr_1fr] lg:pb-28 lg:pt-24">
           <div className="animate-fade-up">
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">
-              <Zap className="h-3.5 w-3.5" />
+              <KynLogo className="h-3.5 w-3.5" />
               {VERSION} — preview publicada, em desenvolvimento ativo
             </div>
             <h1 className="mt-6 flex items-center gap-4 text-6xl font-extrabold tracking-tight text-zinc-950 sm:text-7xl">
-              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-zinc-950 sm:h-16 sm:w-16">
-                <Zap className="h-7 w-7 text-amber-400 sm:h-8 sm:w-8" />
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-zinc-950 p-3 sm:h-16 sm:w-16 sm:p-3.5">
+                <KynLogo className="h-full w-full text-white" />
               </span>
               Kyn
             </h1>
@@ -404,8 +404,8 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6 py-20 lg:py-24">
           <div className="relative overflow-hidden rounded-3xl bg-zinc-950 px-8 py-14 text-center sm:px-16">
             <div className="pointer-events-none absolute -top-20 left-1/2 h-56 w-96 -translate-x-1/2 rounded-full bg-amber-400/20 blur-3xl" />
-            <span className="relative mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-amber-400">
-              <Zap className="h-6 w-6 text-zinc-950" />
+            <span className="relative mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-amber-400 p-2.5">
+              <KynLogo className="h-full w-full text-zinc-950" />
             </span>
             <h2 className="relative mt-6 text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Pronto para escrever código de sistema previsível?
