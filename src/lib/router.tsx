@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 
-export type Route = "home" | "download" | "documentacao";
+export type Route = "home" | "download" | "documentation";
 
 export function parseHash(): Route {
   const raw = window.location.hash.replace(/^#\/?/, "");
   const seg = raw.split(/[#/?]/)[0].toLowerCase();
   if (seg === "download" || seg === "baixar") return "download";
-  if (seg === "documentacao" || seg === "documentação" || seg === "docs") return "documentacao";
+  // Legacy Portuguese links (e.g. #/documentacao) keep working.
+  if (seg === "documentation" || seg === "docs" || seg === "documentacao" || seg === "documentação") {
+    return "documentation";
+  }
   return "home";
 }
 

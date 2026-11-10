@@ -17,23 +17,23 @@ export default function Footer() {
             <span className="text-lg font-bold tracking-tight text-zinc-950">Kyn</span>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-zinc-600">
-            Linguagem de programação de sistemas da Hardion Labs. Controle explícito, segurança
-            verificável e desempenho previsível — para kernels, drivers, embarcados e software nativo.
+            Systems programming language by Hardion Labs. Explicit control, verifiable safety
+            and predictable performance — for kernels, drivers, embedded systems and native software.
           </p>
-          <p className="mt-4 font-mono text-xs text-zinc-500">{displayVersion} · licença MIT · backend LLVM</p>
+          <p className="mt-4 font-mono text-xs text-zinc-500">{displayVersion} · MIT license · LLVM backend</p>
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold text-zinc-950">Navegação</h3>
+          <h3 className="text-sm font-semibold text-zinc-950">Navigation</h3>
           <ul className="mt-4 space-y-2.5 text-sm text-zinc-600">
             <li><a className="transition hover:text-zinc-950" href="#/">Home</a></li>
             <li><a className="transition hover:text-zinc-950" href="#/download">Download</a></li>
-            <li><a className="transition hover:text-zinc-950" href="#/documentacao">Documentação</a></li>
+            <li><a className="transition hover:text-zinc-950" href="#/documentation">Documentation</a></li>
           </ul>
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold text-zinc-950">Recursos oficiais</h3>
+          <h3 className="text-sm font-semibold text-zinc-950">Official resources</h3>
           <ul className="mt-4 space-y-2.5 text-sm text-zinc-600">
             <li>
               <a href={REPO} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 transition hover:text-zinc-950">
@@ -66,7 +66,7 @@ export default function Footer() {
 
       <div className="border-t border-zinc-200">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 py-5 text-xs text-zinc-500 sm:flex-row">
-          <p>© 2026 Hardion Labs — Kyn é open source sob licença MIT.</p>
+          <p>© 2026 Hardion Labs — Kyn is open source under the MIT license.</p>
           <p className="font-mono">Engineered to the core.</p>
         </div>
       </div>

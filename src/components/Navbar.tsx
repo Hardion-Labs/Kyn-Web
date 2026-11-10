@@ -8,7 +8,7 @@ import { DownloadIcon, GithubIcon, KynLogo, MenuIcon, XIcon } from "./Icons";
 const LINKS: { route: Route; label: string; hash: string }[] = [
   { route: "home", label: "Home", hash: "#/" },
   { route: "download", label: "Download", hash: "#/download" },
-  { route: "documentacao", label: "Documentação", hash: "#/documentacao" },
+  { route: "documentation", label: "Documentation", hash: "#/documentation" },
 ];
 
 export default function Navbar({ route }: { route: Route }) {
@@ -51,21 +51,21 @@ export default function Navbar({ route }: { route: Route }) {
             href={REPO}
             target="_blank"
             rel="noreferrer"
-            aria-label="Repositório oficial no GitHub"
+            aria-label="Official repository on GitHub"
             className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-950"
           >
             <GithubIcon className="h-5 w-5" />
           </a>
           <a href="#/download" className="btn-primary !px-3.5 !py-2">
             <DownloadIcon className="h-4 w-4" />
-            Baixar
+            Download
           </a>
         </div>
 
         <button
           className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-600 transition hover:bg-zinc-100 md:hidden"
           onClick={() => setOpen((v) => !v)}
-          aria-label="Abrir menu"
+          aria-label="Open menu"
         >
           {open ? <XIcon className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
         </button>

@@ -19,19 +19,19 @@ export function detectArch(): string | null {
 
 export function detectOS(): OSInfo {
   if (typeof navigator === "undefined") {
-    return { key: "unknown", name: "Desconhecido", detail: "", recommended: false };
+    return { key: "unknown", name: "Unknown", detail: "", recommended: false };
   }
   const ua = navigator.userAgent || "";
   const plat = (navigator as Navigator & { platform?: string }).platform || "";
   const uaDataPlat =
     (navigator as unknown as { userAgentData?: { platform?: string } }).userAgentData?.platform || "";
 
-  // User agents do ReactOS historicamente contêm tokens "Windows NT" — testar primeiro.
+  // ReactOS user agents historically contain "Windows NT" tokens — check this first.
   if (/reactos/i.test(ua) || /reactos/i.test(plat)) {
     return {
       key: "reactos",
       name: "ReactOS",
-      detail: "sistema operacional open source compatível com Windows — veja github.com/reactos/reactos",
+      detail: "open source operating system compatible with Windows — see github.com/reactos/reactos",
       recommended: false,
     };
   }
@@ -39,7 +39,7 @@ export function detectOS(): OSInfo {
     return {
       key: "windows",
       name: "Windows",
-      detail: "recomendamos o WSL2: a toolchain nativa do Kyn (Zig + Clang + ar + shell POSIX) roda em ambiente Linux",
+      detail: "we recommend WSL2: the native Kyn toolchain (Zig + Clang + ar + POSIX shell) runs in a Linux environment",
       recommended: false,
     };
   }
@@ -47,7 +47,7 @@ export function detectOS(): OSInfo {
     return {
       key: "android",
       name: "Android",
-      detail: "sem suporte oficial — use um ambiente desktop com Zig 0.17.0 + Clang e escolha a plataforma abaixo",
+      detail: "no official support — use a desktop environment with Zig 0.17.0 + Clang and choose your platform below",
       recommended: false,
     };
   }
@@ -55,7 +55,7 @@ export function detectOS(): OSInfo {
     return {
       key: "ios",
       name: "iOS / iPadOS",
-      detail: "sem suporte oficial — use um ambiente desktop com Zig 0.17.0 + Clang e escolha a plataforma abaixo",
+      detail: "no official support — use a desktop environment with Zig 0.17.0 + Clang and choose your platform below",
       recommended: false,
     };
   }
@@ -63,7 +63,7 @@ export function detectOS(): OSInfo {
     return {
       key: "macos",
       name: "macOS",
-      detail: "toolchain Zig + Clang disponível; nesta release a plataforma validada oficialmente é Linux x86_64",
+      detail: "Zig + Clang toolchain available; in this release, the officially validated platform is Linux x86_64",
       recommended: false,
     };
   }
@@ -71,14 +71,14 @@ export function detectOS(): OSInfo {
     return {
       key: "linux",
       name: "Linux",
-      detail: "plataforma oficialmente validada nesta release (x86_64, System V) — instalação direta",
+      detail: "officially validated platform in this release (x86_64, System V) — direct installation",
       recommended: true,
     };
   }
   return {
     key: "unknown",
-    name: "Sistema não identificado",
-    detail: "escolha manualmente a sua plataforma nos cartões abaixo",
+    name: "Unidentified system",
+    detail: "choose your platform manually from the cards below",
     recommended: false,
   };
 }
@@ -97,9 +97,9 @@ export const PLATFORMS: Platform[] = [
     key: "linux",
     name: "Linux",
     note: "x86_64 · System V",
-    blurb: "Plataforma oficialmente validada para o Kyn v0.1. Instale o Zig 0.17.0, o Clang e o ar, clone o repositório e compile.",
+    blurb: "Officially validated platform for Kyn v0.1. Install Zig 0.17.0, Clang and ar, clone the repository, and build it.",
     commands: `# Zig 0.17.0 (https://ziglang.org/download/) + Clang + ar
-sudo apt install clang   # ou o equivalente na sua distribuição
+sudo apt install clang   # or the equivalent for your distribution
 
 git clone https://github.com/Hardion-Labs/Kyn.git
 cd Kyn
@@ -110,13 +110,13 @@ zig build
   {
     key: "windows",
     name: "Windows",
-    note: "via WSL2 (recomendado)",
-    blurb: "A toolchain nativa do Kyn depende de Zig, Clang, ar e um shell POSIX. No Windows, use o WSL2 e siga os mesmos passos do Linux.",
-    commands: `# PowerShell — habilite o WSL2
+    note: "via WSL2 (recommended)",
+    blurb: "The native Kyn toolchain depends on Zig, Clang, ar and a POSIX shell. On Windows, use WSL2 and follow the same steps as Linux.",
+    commands: `# PowerShell — enable WSL2
 wsl --install
-wsl   # abra a distribuição Linux (ex.: Ubuntu)
+wsl   # open your Linux distribution (e.g., Ubuntu)
 
-# Dentro do WSL:
+# Inside WSL:
 git clone https://github.com/Hardion-Labs/Kyn.git
 cd Kyn
 zig build
@@ -126,7 +126,7 @@ zig build
     key: "macos",
     name: "macOS",
     note: "Zig + Clang",
-    blurb: "Instale as Command Line Tools (Clang) e o Zig 0.17.0. Nesta release, a plataforma validada oficialmente é Linux x86_64 — valide no seu ambiente.",
+    blurb: "Install the Command Line Tools (Clang) and Zig 0.17.0. In this release, the officially validated platform is Linux x86_64 — verify it in your environment.",
     commands: `# Command Line Tools (Clang) + Zig 0.17.0 (https://ziglang.org/download/)
 xcode-select --install
 
@@ -139,11 +139,11 @@ zig build
     key: "reactos",
     name: "ReactOS",
     note: "github.com/reactos/reactos",
-    blurb: "Kyn foi projetada para kernels e drivers — e o ReactOS é um sistema operacional open source compatível com Windows, um alvo natural para a linguagem.",
-    commands: `# Repositório oficial do ReactOS:
+    blurb: "Kyn was designed for kernels and drivers — and ReactOS is an open source operating system compatible with Windows, a natural target for the language.",
+    commands: `# Official ReactOS repository:
 https://github.com/reactos/reactos
 
-# No ReactOS (via ROSBE / subsistema POSIX):
+# On ReactOS (via ROSBE / POSIX subsystem):
 git clone https://github.com/Hardion-Labs/Kyn.git
 cd Kyn
 zig build

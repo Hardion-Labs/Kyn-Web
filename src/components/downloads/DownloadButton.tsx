@@ -75,10 +75,10 @@ export default function DownloadButton({
         <div className="flex items-start gap-2.5">
           <AlertCircleIcon className="mt-0.5 h-4 w-4 shrink-0" />
           <div>
-            <p className="font-semibold">URL de download bloqueada por segurança</p>
+            <p className="font-semibold">Download URL blocked for security reasons</p>
             <p className="mt-1 text-xs text-red-700">
-              O arquivo <code className="font-mono">{download.filename}</code> não possui um link HTTPS
-              válido do Google Drive.
+              The file <code className="font-mono">{download.filename}</code> does not have a valid HTTPS
+              Google Drive link.
             </p>
           </div>
         </div>
@@ -125,27 +125,27 @@ export default function DownloadButton({
             className="btn-primary !px-4 !py-2.5"
           >
             <DownloadIcon className="h-4 w-4" />
-            {compact ? "Baixar" : "Baixar arquivo"}
+            {compact ? "Download" : "Download file"}
           </a>
           <a
             href={driveLinks.shareUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-secondary !px-3.5 !py-2.5"
-            title="Use esta opção se o download direto do Google Drive solicitar confirmação ou falhar"
+            title="Use this option if the direct Google Drive download asks for confirmation or fails"
           >
-            Abrir no Google Drive
+            Open in Google Drive
             <ExternalIcon className="h-3.5 w-3.5" />
           </a>
         </div>
       </div>
 
-      {/* Verificação de integridade SHA-256 */}
+      {/* SHA-256 integrity check */}
       <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-700">
             <ShieldIcon className="h-3.5 w-3.5 text-amber-600" />
-            Integridade SHA-256
+            SHA-256 integrity
           </span>
           {!shaPlaceholder && (
             <button
@@ -158,13 +158,13 @@ export default function DownloadButton({
               ) : (
                 <CopyIcon className="h-3.5 w-3.5" />
               )}
-              {copiedHash ? "Hash copiado" : "Copiar hash"}
+              {copiedHash ? "Hash copied" : "Copy hash"}
             </button>
           )}
         </div>
 
         <code className="mt-1.5 block break-all font-mono text-xs text-zinc-700">
-          {download.sha256 || "Não informado"}
+          {download.sha256 || "Not provided"}
         </code>
 
         {!shaPlaceholder && (
@@ -182,7 +182,7 @@ export default function DownloadButton({
               ) : (
                 <CopyIcon className="h-3 w-3" />
               )}
-              {copiedCmd ? "Copiado" : "Copiar comando"}
+              {copiedCmd ? "Copied" : "Copy command"}
             </button>
           </div>
         )}
@@ -190,13 +190,13 @@ export default function DownloadButton({
 
       {hasPendingReleaseAsset && (
         <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800 ring-1 ring-amber-200">
-          Entrada de modelo no manifesto: substitua{" "}
+          Template entry in the manifest: replace{" "}
           {driveLinks.isPlaceholder && <code className="font-mono font-semibold">FILE_ID</code>}
           {driveLinks.isPlaceholder && shaPlaceholder && " e "}
           {shaPlaceholder && (
             <code className="font-mono font-semibold">REPLACE_WITH_REAL_SHA256</code>
           )}{" "}
-          em <code className="font-mono">public/data/versions.json</code> após publicar os arquivos no
+          in <code className="font-mono">public/data/versions.json</code> after publishing the files to
           Google Drive.
         </p>
       )}

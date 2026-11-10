@@ -119,7 +119,7 @@ export default function CodeBlock({
           ) : (
             <CopyIcon className="h-3.5 w-3.5" />
           )}
-          {copied ? "Copiado" : "Copiar"}
+          {copied ? "Copied" : "Copy"}
         </button>
       </div>
       <pre className="overflow-x-auto p-4 font-mono text-[13px] leading-relaxed">
