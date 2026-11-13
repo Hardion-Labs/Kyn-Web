@@ -397,9 +397,13 @@ export default function Documentation() {
             </p>
             <CodeBlock code={C_ABI} lang="kyn" title="abi.kyn" />
             <p>
-              Scalars of all widths, pointers, bool and char are supported; integer-like aggregates up to 16
-              bytes by value; and slices by value as{" "}
-              <code>{"struct { ptr, usize }"}</code>. Unsupported constructs are rejected with diagnostics
+              Scalars of all widths, pointers, bool and char are supported; aggregates up to 16
+              bytes by value — classified leaf by leaf the way Clang classifies them, covering nested
+              structs, fixed-array members, pointers, <code>i128</code> and SSE pairs — and slices by
+              value as{" "}
+              <code>{"struct { ptr, usize }"}</code>. <code>extern</code> declarations can be variadic
+              (e.g. <code>printf</code>), and function values (<code>fn(P) R</code>) cross the boundary
+              as plain pointers. Unsupported constructs are rejected with diagnostics
               (e.g. <code>E0410</code>, <code>E0473</code>) instead of becoming undefined behavior.
             </p>
           </Sec>
@@ -420,12 +424,11 @@ export default function Documentation() {
             <Table
               head={["Milestone", "Status"]}
               rows={[
-                ["v0.1.0-alpha.3 — current main preview", "published"],
-                ["Extended C ABI (scalars, SSE, slices)", "delivered in v0.1.0-alpha.3"],
-                ["Const-polymorphic slicing ([..], [start..], [..end], .ptr, .len)", "delivered in v0.1.0-alpha.3"],
-                ["Relative imports with aliases and namespaces", "delivered in v0.1.0-alpha.3"],
-                ["SSE cases for mixed aggregates in the C ABI", "partial"],
-                ["Modules and package manifest; generics/traits; std lib and runtime", "planned"],
+                ["v0.1.0-alpha.5 — current main preview", "published"],
+                ["Explicit codegen targets (--target), variadic extern, first-class function values", "delivered in v0.1.0-alpha.5"],
+                ["Leaf-based System V aggregate classification; release installers", "delivered in v0.1.0-alpha.4"],
+                ["match, tagged unions, unions, packed structs, bitfields, align(N)", "implemented on main, unreleased"],
+                ["Package manifest; generics/traits; std lib and runtime", "planned"],
               ]}
             />
             <p>
