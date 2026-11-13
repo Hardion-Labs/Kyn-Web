@@ -102,12 +102,12 @@ const FEATURES = [
   {
     icon: LinkIcon,
     title: "C ABI nativa",
-    text: "extern fn / export fn let you call and be called from C through the System V ABI on x86_64 Linux, including { ptr, usize } slices.",
+    text: "extern fn / export fn let you call and be called from C through the System V ABI on x86_64 Linux: scalars, aggregates up to 16 bytes, { ptr, usize } slices, variadic extern calls and function values.",
   },
   {
     icon: CheckIcon,
     title: "Integration tests",
-    text: "End-to-end suite with positive and negative programs, the four security profiles and a deterministic corpus of 900 robustness cases.",
+    text: "End-to-end suite with positive and negative programs, the four security profiles and a deterministic corpus of 902 robustness cases.",
   },
 ];
 
@@ -148,21 +148,33 @@ const TIMELINE = [
   },
   {
     tag: "v0.1.0-alpha.3",
+    status: "published",
+    tone: "emerald" as const,
+    text: "Extended C ABI (scalars, SSE, slices), const-polymorphic slicing ([..], [start..], [..end], .ptr, .len) and relative imports with aliases and per-module namespaces.",
+  },
+  {
+    tag: "v0.1.0-alpha.4",
+    status: "published",
+    tone: "emerald" as const,
+    text: "Leaf-based System V classification for nested structs, fixed arrays, pointer and 128-bit members, validated against Clang over 13,370 aggregate shapes; release archives with installers; i128/u128 constants.",
+  },
+  {
+    tag: "v0.1.0-alpha.5",
     status: "current",
     tone: "amber" as const,
-    text: "Extended C ABI (scalars, SSE, slices), const-polymorphic slicing ([..], [start..], [..end], .ptr, .len) and relative imports with aliases and per-module namespaces.",
+    text: "Explicit code-generation targets (kync --target <triple>), variadic extern declarations with C default argument promotions, and first-class function values with null-checked indirect calls.",
   },
   {
     tag: "In progress",
     status: "partial",
     tone: "yellow" as const,
-    text: "SSE cases for mixed aggregates in the C ABI, and the explicit policy of keeping checks in every compilation profile.",
+    text: "Already on main: match over integers, bool and enums, tagged unions with payload binding, unions, packed structs, bitfields, align(N), anonymous members, variadic callees (va_arg) and exported globals.",
   },
   {
     tag: "Planned",
     status: "roadmap",
     tone: "zinc" as const,
-    text: "Modules and package manifest, generics/traits, standard library and runtime, plus defer, for, switch/match, closures and exceptions.",
+    text: "Package manifest and module tooling, generics/traits, standard library and runtime, plus defer, for, closures and exceptions.",
   },
 ];
 

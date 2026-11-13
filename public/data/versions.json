@@ -5,8 +5,38 @@
     "description": "Programming language.",
     "website": "https://hardion-labs.github.io/Kyn-Web/"
   },
-  "latestVersion": "0.1.0-alpha.3",
+  "latestVersion": "0.1.0-alpha.5",
   "releases": [
+    {
+      "version": "0.1.0-alpha.5",
+      "releaseDate": "2026-11-12",
+      "stable": false,
+      "published": true,
+      "prerelease": true,
+      "changelog": [
+        "Explicit code-generation targets: kync --target <triple> selects the machine code for emit-obj, build and run; the same IR cross-compiles to verified x86-64 and AArch64 ELF objects.",
+        "Variadic extern declarations (e.g. extern fn printf(format: *const u8, ...) i32) with C default argument promotions; aggregates, slices and bare null in the variadic tail are rejected (E0475).",
+        "First-class function values (fn(P) R) and indirect calls: stored in structs, passed to and from C, compared with null, and called through a null-checked indirect call.",
+        "Targets without the System V aggregate ABI refuse aggregate boundaries (E0473) instead of lowering the host convention for another machine.",
+        "Alpha: no source or ABI stability is promised between releases."
+      ],
+      "downloads": []
+    },
+    {
+      "version": "0.1.0-alpha.4",
+      "releaseDate": "2026-11-10",
+      "stable": false,
+      "published": true,
+      "prerelease": true,
+      "changelog": [
+        "Leaf-based System V classification: nested structs, fixed-array members, pointer leaves and 128-bit integer members cross the C ABI exactly like Clang flattens them.",
+        "Aggregate coverage exhausted: a 13,370-shape differential probe finds zero aggregates up to 16 bytes that Kyn rejects but Clang accepts.",
+        "packaging/: release-archive tooling with install.sh (Linux, macOS, Git Bash) and install.ps1 / install.bat (Windows) installers.",
+        "128-bit integer constants end to end: i128/u128 literals no longer crash the type checker or the backend.",
+        "Bool values stored to memory are zero-extended to a full i8, restoring the full-byte definition Clang requires at the C ABI."
+      ],
+      "downloads": []
+    },
     {
       "version": "0.1.0-alpha.3",
       "releaseDate": "2026-11-09",
